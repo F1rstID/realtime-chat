@@ -1,0 +1,493 @@
+basePath: /
+definitions:
+  common.AuthData:
+    properties:
+      token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        type: string
+      user:
+        $ref: '#/definitions/common.UserData'
+    type: object
+  common.ChatData:
+    properties:
+      createdAt:
+        example: "2024-03-23T12:00:00Z"
+        type: string
+      id:
+        example: 1
+        type: integer
+      name:
+        example: 개발팀 채팅방
+        type: string
+    type: object
+  common.ChatResponse:
+    properties:
+      code:
+        example: 2000
+        type: integer
+      data:
+        $ref: '#/definitions/common.ChatData'
+      success:
+        example: true
+        type: boolean
+    type: object
+  common.ErrEmailExists:
+    properties:
+      code:
+        example: 4004
+        type: integer
+      data:
+        example: 이미 사용중인 이메일입니다
+        type: string
+      success:
+        example: false
+        type: boolean
+    type: object
+  common.ErrInternalServer:
+    properties:
+      code:
+        example: 5000
+        type: integer
+      data:
+        example: 내부 서버 오류가 발생했습니다
+        type: string
+      success:
+        example: false
+        type: boolean
+    type: object
+  common.ErrInvalidAuth:
+    properties:
+      code:
+        example: 4006
+        type: integer
+      data:
+        example: 이메일 또는 비밀번호가 올바르지 않습니다
+        type: string
+      success:
+        example: false
+        type: boolean
+    type: object
+  common.ErrInvalidRequest:
+    properties:
+      code:
+        example: 4000
+        type: integer
+      data:
+        example: 잘못된 요청입니다
+        type: string
+      success:
+        example: false
+        type: boolean
+    type: object
+  common.ErrNicknameExists:
+    properties:
+      code:
+        example: 4005
+        type: integer
+      data:
+        example: 이미 사용중인 닉네임입니다
+        type: string
+      success:
+        example: false
+        type: boolean
+    type: object
+  common.ErrUnauthorizedMessage:
+    properties:
+      code:
+        example: 4009
+        type: integer
+      data:
+        example: 메시지에 대한 권한이 없습니다
+        type: string
+      success:
+        example: false
+        type: boolean
+    type: object
+  common.LoginResponse:
+    properties:
+      code:
+        example: 2000
+        type: integer
+      data:
+        $ref: '#/definitions/common.AuthData'
+      success:
+        example: true
+        type: boolean
+    type: object
+  common.MessageData:
+    properties:
+      chatId:
+        example: 1
+        type: integer
+      content:
+        example: 안녕하세요
+        type: string
+      createdAt:
+        example: "2024-03-23T12:00:00Z"
+        type: string
+      id:
+        example: 1
+        type: integer
+      senderId:
+        example: 1
+        type: integer
+      updatedAt:
+        example: "2024-03-23T12:00:00Z"
+        type: string
+    type: object
+  common.MessageResponse:
+    properties:
+      code:
+        example: 2000
+        type: integer
+      data:
+        $ref: '#/definitions/common.MessageData'
+      success:
+        example: true
+        type: boolean
+    type: object
+  common.RegisterResponse:
+    properties:
+      code:
+        example: 2001
+        type: integer
+      data:
+        $ref: '#/definitions/common.AuthData'
+      success:
+        example: true
+        type: boolean
+    type: object
+  common.UserData:
+    properties:
+      createdAt:
+        example: "2024-03-23T12:00:00Z"
+        type: string
+      email:
+        example: user@example.com
+        type: string
+      id:
+        example: 1
+        type: integer
+      nickname:
+        example: 홍길동
+        type: string
+    type: object
+  controllers.CreateGroupChatRequest:
+    type: object
+  controllers.LoginRequest:
+    properties:
+      email:
+        example: user@example.com
+        type: string
+      password:
+        example: password123
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  controllers.RegisterRequest:
+    properties:
+      email:
+        example: user@example.com
+        type: string
+      nickname:
+        example: 홍길동
+        maxLength: 20
+        minLength: 2
+        type: string
+      password:
+        example: password123
+        minLength: 8
+        type: string
+    required:
+    - email
+    - nickname
+    - password
+    type: object
+  controllers.SendMessageRequest:
+    properties:
+      chatId:
+        example: 1
+        type: integer
+      content:
+        example: Hello, how are you?
+        type: string
+    required:
+    - chatId
+    - content
+    type: object
+  controllers.UpdateMessageRequest:
+    properties:
+      content:
+        example: Updated message content
+        type: string
+    required:
+    - content
+    type: object
+host: localhost:5050
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: 실시간 채팅을 위한 RESTful API 서버입니다.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Realtime Chat API
+  version: "1.0"
+paths:
+  /api/auth/login:
+    post:
+      consumes:
+      - application/json
+      description: 이메일과 비밀번호로 로그인하고 인증 토큰을 반환합니다
+      parameters:
+      - description: 로그인 정보
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.LoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.ErrInvalidRequest'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/common.ErrInvalidAuth'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.ErrInternalServer'
+      summary: 사용자 로그인
+      tags:
+      - Auth
+  /api/auth/register:
+    post:
+      consumes:
+      - application/json
+      description: 새로운 사용자를 등록하고 인증 토큰을 반환합니다
+      parameters:
+      - description: 등록 정보
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/common.RegisterResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.ErrInvalidRequest'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/common.ErrNicknameExists'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.ErrInternalServer'
+      summary: 사용자 등록
+      tags:
+      - Auth
+  /api/chats/group:
+    post:
+      consumes:
+      - application/json
+      description: 그룹 채팅방을 생성합니다
+      parameters:
+      - description: 채팅방 생성 정보
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.CreateGroupChatRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/common.ChatResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.ErrInvalidRequest'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.ErrInternalServer'
+      security:
+      - Bearer: []
+      summary: 그룹 채팅 생성
+      tags:
+      - Chat
+  /api/chats/private/{user1_id}/{user2_id}:
+    post:
+      consumes:
+      - application/json
+      description: 두 사용자 간의 1:1 채팅을 생성합니다
+      parameters:
+      - description: 사용자1 ID
+        in: path
+        name: user1_id
+        required: true
+        type: integer
+      - description: 사용자2 ID
+        in: path
+        name: user2_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/common.ChatResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.ErrInvalidRequest'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.ErrInternalServer'
+      security:
+      - Bearer: []
+      summary: 1:1 채팅 생성
+      tags:
+      - Chat
+  /api/messages:
+    post:
+      consumes:
+      - application/json
+      description: 채팅방에 새로운 메시지를 전송합니다
+      parameters:
+      - description: 메시지 정보
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.SendMessageRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/common.MessageResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.ErrInvalidRequest'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.ErrInternalServer'
+      security:
+      - Bearer: []
+      summary: 메시지 전송
+      tags:
+      - Message
+  /api/messages/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: 메시지를 삭제합니다
+      parameters:
+      - description: 메시지 ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.MessageResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.ErrInvalidRequest'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/common.ErrUnauthorizedMessage'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.ErrInternalServer'
+      security:
+      - Bearer: []
+      summary: 메시지 삭제
+      tags:
+      - Message
+    put:
+      consumes:
+      - application/json
+      description: 기존 메시지의 내용을 수정합니다
+      parameters:
+      - description: 메시지 ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 수정할 메시지 내용
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.UpdateMessageRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.MessageResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.ErrInvalidRequest'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/common.ErrUnauthorizedMessage'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.ErrInternalServer'
+      security:
+      - Bearer: []
+      summary: 메시지 수정
+      tags:
+      - Message
+security:
+- Bearer: []
+securityDefinitions:
+  Bearer:
+    description: '''Bearer '' 접두사와 함께 JWT 토큰을 입력하세요. 예시: "Bearer eyJhbGciOi..."'
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

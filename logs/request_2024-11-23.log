@@ -1,0 +1,65 @@
+[REQUEST] 2024/11/23 23:10:07 Method: GET, Path: /ws/1, IP: 127.0.0.1, User-Agent: , Status: 101, Duration: 1.415042ms
+[REQUEST] 2024/11/23 23:10:13 Method: POST, Path: /api/chats/private, IP: 127.0.0.1, User-Agent: PostmanRuntime/7.42.0, Status: 201, Duration: 13.866208ms
+[34m[REQUEST] request_logger.go:22: Method: POST, Path: /api/messages, IP: 127.0.0.1, Status: 201, Duration: 9.921167ms[0m
+[34m[REQUEST] request_logger.go:22: Method: POST, Path: /api/messages, IP: 127.0.0.1, Status: 201, Duration: 2.947959ms[0m
+[34m[REQUEST] request_logger.go:22: Method: POST, Path: /api/messages, IP: 127.0.0.1, Status: 201, Duration: 1.928083ms[0m
+[34m[REQUEST] request_logger.go:22: Method: POST, Path: /api/messages, IP: 127.0.0.1, Status: 201, Duration: 1.903041ms[0m
+[34m[REQUEST] request_logger.go:22: Method: POST, Path: /api/messages, IP: 127.0.0.1, Status: 201, Duration: 1.899584ms[0m
+[34m[REQUEST] request_logger.go:22: Method: POST, Path: /api/auth/register, IP: 127.0.0.1, Status: 409, Duration: 2.021333ms[0m
+[34m[REQUEST] request_logger.go:22: Method: POST, Path: /api/auth/login, IP: 127.0.0.1, Status: 401, Duration: 555.792µs[0m
+[34m[REQUEST] request_logger.go:22: Method: POST, Path: /api/auth/login, IP: 127.0.0.1, Status: 401, Duration: 351.167µs[0m
+[34m[REQUEST] request_logger.go:22: Method: POST, Path: /api/auth/login, IP: 127.0.0.1, Status: 200, Duration: 505.15ms[0m
+[34m[REQUEST] request_logger.go:22: Method: POST, Path: /api/auth/login, IP: 127.0.0.1, Status: 200, Duration: 493.482291ms[0m
+[34m[REQUEST] request_logger.go:22: Method: POST, Path: /api/auth/login, IP: 127.0.0.1, Status: 200, Duration: 496.193375ms[0m
+[37m2024-11-23 23:15:43 [REQUEST][34m request_logger.go:22: Method: POST, Path: /api/auth/login, IP: 127.0.0.1, Status: 200, Duration: 499.261542ms[0m
+[37m2024-11-23 23:15:52 [REQUEST][34m request_logger.go:22: Method: POST, Path: /api/auth/register, IP: 127.0.0.1, Status: 201, Duration: 11.5665ms[0m
+[37m2024-11-23 23:15:57 [REQUEST][34m request_logger.go:22: Method: POST, Path: /api/auth/login, IP: 127.0.0.1, Status: 200, Duration: 4.509417ms[0m
+[37m2024-11-23 23:15:58 [REQUEST][34m request_logger.go:22: Method: POST, Path: /api/auth/login, IP: 127.0.0.1, Status: 200, Duration: 4.51775ms[0m
+[37m2024-11-23 23:15:59 [REQUEST][34m request_logger.go:22: Method: POST, Path: /api/auth/login, IP: 127.0.0.1, Status: 200, Duration: 11.217167ms[0m
+[37m2024-11-23 23:15:59 [REQUEST][34m request_logger.go:22: Method: POST, Path: /api/auth/login, IP: 127.0.0.1, Status: 200, Duration: 4.501042ms[0m
+[37m2024-11-23 23:16:00 [REQUEST][34m request_logger.go:22: Method: POST, Path: /api/auth/login, IP: 127.0.0.1, Status: 200, Duration: 4.48375ms[0m
+[37m2024-11-23 23:16:00 [REQUEST][34m request_logger.go:22: Method: POST, Path: /api/auth/login, IP: 127.0.0.1, Status: 200, Duration: 4.880041ms[0m
+[37m2024-11-23 23:16:00 [REQUEST][34m request_logger.go:22: Method: POST, Path: /api/auth/login, IP: 127.0.0.1, Status: 200, Duration: 4.969292ms[0m
+[37m2024-11-23 23:16:01 [REQUEST][34m request_logger.go:22: Method: POST, Path: /api/auth/login, IP: 127.0.0.1, Status: 200, Duration: 11.625166ms[0m
+[37m2024-11-23 23:16:01 [REQUEST][34m request_logger.go:22: Method: POST, Path: /api/auth/login, IP: 127.0.0.1, Status: 200, Duration: 4.50425ms[0m
+[37m2024-11-23 23:16:01 [REQUEST][34m request_logger.go:22: Method: POST, Path: /api/auth/login, IP: 127.0.0.1, Status: 200, Duration: 4.549208ms[0m
+[37m2024-11-23 23:16:01 [REQUEST][34m request_logger.go:22: Method: POST, Path: /api/auth/login, IP: 127.0.0.1, Status: 200, Duration: 4.476958ms[0m
+[37m2024-11-23 23:16:01 [REQUEST][34m request_logger.go:22: Method: POST, Path: /api/auth/login, IP: 127.0.0.1, Status: 200, Duration: 4.5145ms[0m
+[37m2024-11-23 23:16:01 [REQUEST][34m request_logger.go:22: Method: POST, Path: /api/auth/login, IP: 127.0.0.1, Status: 200, Duration: 4.311458ms[0m
+[37m2024-11-23 23:16:01 [REQUEST][34m request_logger.go:22: Method: POST, Path: /api/auth/login, IP: 127.0.0.1, Status: 200, Duration: 4.887875ms[0m
+[37m2024-11-23 23:16:01 [REQUEST][34m request_logger.go:22: Method: POST, Path: /api/auth/login, IP: 127.0.0.1, Status: 200, Duration: 4.862542ms[0m
+[37m2024-11-23 23:18:06 [REQUEST][34m request_logger.go:22: Method: POST, Path: /api/auth/login, IP: 127.0.0.1, Status: 401, Duration: 435.916µs[0m
+[37m2024-11-23 23:18:07 [REQUEST][34m request_logger.go:22: Method: POST, Path: /api/auth/login, IP: 127.0.0.1, Status: 401, Duration: 764.542µs[0m
+[37m2024-11-23 23:19:11 [REQUEST][34m request_logger.go:22: Method: GET, Path: /ws/1, IP: 127.0.0.1, Status: 101, Duration: 4.36325ms[0m
+[37m2024-11-23 23:19:17 [REQUEST][34m request_logger.go:22: Method: POST, Path: /api/messages, IP: 127.0.0.1, Status: 201, Duration: 4.760333ms[0m
+[37m2024-11-23 23:21:10 [REQUEST][34m request_logger.go:22: Method: PUT, Path: /api/messages/11, IP: 127.0.0.1, Status: 401, Duration: 26.458µs[0m
+[37m2024-11-23 23:21:27 [REQUEST][34m request_logger.go:22: Method: PUT, Path: /api/messages/11, IP: 127.0.0.1, Status: 401, Duration: 70.5µs[0m
+[37m2024-11-23 23:21:28 [REQUEST][34m request_logger.go:22: Method: PUT, Path: /api/messages/11, IP: 127.0.0.1, Status: 401, Duration: 21.875µs[0m
+[37m2024-11-23 23:21:50 [REQUEST][34m request_logger.go:22: Method: PUT, Path: /api/messages/11, IP: 127.0.0.1, Status: 401, Duration: 20.333µs[0m
+[37m2024-11-23 23:26:36 [REQUEST][34m request_logger.go:22: Method: GET, Path: index.html, IP: 127.0.0.1, Status: 200, Duration: 4.134959ms[0m
+[37m2024-11-23 23:26:36 [REQUEST][34m request_logger.go:22: Method: GET, Path: swagger-ui.css, IP: 127.0.0.1, Status: 200, Duration: 85.833µs[0m
+[37m2024-11-23 23:26:36 [REQUEST][34m request_logger.go:22: Method: GET, Path: swagger-ui-bundle.js, IP: 127.0.0.1, Status: 200, Duration: 1.577208ms[0m
+[37m2024-11-23 23:26:36 [REQUEST][34m request_logger.go:22: Method: GET, Path: swagger-ui-standalone-preset.js, IP: 127.0.0.1, Status: 200, Duration: 4.739125ms[0m
+[37m2024-11-23 23:26:36 [REQUEST][34m request_logger.go:22: Method: GET, Path: doc.json, IP: 127.0.0.1, Status: 200, Duration: 2.35425ms[0m
+[37m2024-11-23 23:26:36 [REQUEST][34m request_logger.go:22: Method: GET, Path: favicon-32x32.png, IP: 127.0.0.1, Status: 200, Duration: 22.75µs[0m
+[37m2024-11-23 23:26:46 [REQUEST][34m request_logger.go:22: Method: POST, Path: /auth/login, IP: 127.0.0.1, Status: 200, Duration: 46.166µs[0m
+[37m2024-11-23 23:28:04 [REQUEST][34m request_logger.go:22: Method: GET, Path: index.html, IP: 127.0.0.1, Status: 200, Duration: 3.142792ms[0m
+[37m2024-11-23 23:28:04 [REQUEST][34m request_logger.go:22: Method: GET, Path: swagger-ui.css, IP: 127.0.0.1, Status: 200, Duration: 57.333µs[0m
+[37m2024-11-23 23:28:04 [REQUEST][34m request_logger.go:22: Method: GET, Path: swagger-ui-standalone-preset.js, IP: 127.0.0.1, Status: 200, Duration: 1.526667ms[0m
+[37m2024-11-23 23:28:04 [REQUEST][34m request_logger.go:22: Method: GET, Path: swagger-ui-bundle.js, IP: 127.0.0.1, Status: 200, Duration: 1.662ms[0m
+[37m2024-11-23 23:28:04 [REQUEST][34m request_logger.go:22: Method: GET, Path: doc.json, IP: 127.0.0.1, Status: 200, Duration: 968.208µs[0m
+[37m2024-11-23 23:28:04 [REQUEST][34m request_logger.go:22: Method: GET, Path: favicon-32x32.png, IP: 127.0.0.1, Status: 200, Duration: 31.833µs[0m
+[37m2024-11-23 23:28:10 [REQUEST][34m request_logger.go:22: Method: POST, Path: /api/auth/login, IP: 127.0.0.1, Status: 200, Duration: 502.181ms[0m
+[37m2024-11-23 23:28:21 [REQUEST][34m request_logger.go:22: Method: POST, Path: /api/messages, IP: 127.0.0.1, Status: 401, Duration: 70.583µs[0m
+[37m2024-11-23 23:28:31 [REQUEST][34m request_logger.go:22: Method: POST, Path: /api/messages, IP: 127.0.0.1, Status: 201, Duration: 9.61825ms[0m
+[37m2024-11-23 23:29:24 [REQUEST][34m request_logger.go:22: Method: POST, Path: /api/auth/login, IP: 127.0.0.1, Status: 200, Duration: 508.098833ms[0m
+[37m2024-11-23 23:29:39 [REQUEST][34m request_logger.go:22: Method: GET, Path: /ws/1, IP: 127.0.0.1, Status: 101, Duration: 3.644084ms[0m
+[37m2024-11-23 23:29:46 [REQUEST][34m request_logger.go:22: Method: POST, Path: /api/messages, IP: 127.0.0.1, Status: 201, Duration: 2.663625ms[0m
+[37m2024-11-23 23:30:10 [REQUEST][34m request_logger.go:22: Method: PUT, Path: /api/messages/13, IP: 127.0.0.1, Status: 200, Duration: 3.198916ms[0m
+[37m2024-11-23 23:37:48 [REQUEST][34m request_logger.go:22: Method: PUT, Path: /api/messages/13, IP: 127.0.0.1, Status: 200, Duration: 7.902375ms[0m
+[37m2024-11-23 23:38:04 [REQUEST][34m request_logger.go:22: Method: POST, Path: /api/messages, IP: 127.0.0.1, Status: 201, Duration: 5.2905ms[0m
+[37m2024-11-23 23:38:13 [REQUEST][34m request_logger.go:22: Method: GET, Path: /ws/1, IP: 127.0.0.1, Status: 101, Duration: 3.728792ms[0m
+[37m2024-11-23 23:38:16 [REQUEST][34m request_logger.go:22: Method: POST, Path: /api/messages, IP: 127.0.0.1, Status: 201, Duration: 2.909458ms[0m
+[37m2024-11-23 23:38:31 [REQUEST][34m request_logger.go:22: Method: PUT, Path: /api/messages/13, IP: 127.0.0.1, Status: 200, Duration: 1.64525ms[0m
+[37m2024-11-23 23:40:16 [REQUEST][34m request_logger.go:22: Method: GET, Path: /ws/1, IP: 127.0.0.1, Status: 101, Duration: 1.703833ms[0m
+[37m2024-11-23 23:40:21 [REQUEST][34m request_logger.go:22: Method: PUT, Path: /api/messages/13, IP: 127.0.0.1, Status: 200, Duration: 10.150833ms[0m

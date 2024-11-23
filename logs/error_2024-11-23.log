@@ -1,0 +1,2 @@
+[37m2024-11-23 23:26:46 [ERROR][31m request_logger.go:33: Method: POST, Path: /auth/login, Error: Cannot POST /auth/login[0m
+[37m2024-11-23 23:26:46 [ERROR][31m error_handler.go:17: Request failed - Method: POST, Path: /auth/login, Error: Cannot POST /auth/login[0m
