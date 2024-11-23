@@ -22,12 +22,13 @@ type WebSocketEvent struct {
 
 // MessageEventData represents the data structure for message events
 type MessageEventData struct {
-	MessageID int       `json:"messageId"`
-	ChatID    int       `json:"chatId"`
-	SenderID  int       `json:"senderId"`
-	Content   string    `json:"content,omitempty"`
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	MessageID      int       `json:"messageId"`
+	ChatID         int       `json:"chatId"`
+	SenderID       int       `json:"senderId"`
+	SenderNickname string    `json:"senderNickname"`
+	Content        string    `json:"content,omitempty"`
+	CreatedAt      time.Time `json:"createdAt,omitempty"`
+	UpdatedAt      time.Time `json:"updatedAt,omitempty"`
 }
 
 // NewWebSocketEvent creates a new WebSocket event

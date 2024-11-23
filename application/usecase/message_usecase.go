@@ -53,12 +53,13 @@ func (mu *MessageUsecase) SendMessage(chatID, senderID int, content string) (*dt
 
 	// Create and broadcast WebSocket event
 	eventData := &events.MessageEventData{
-		MessageID: message.ID,
-		ChatID:    message.ChatId,
-		SenderID:  message.SenderId,
-		Content:   message.Content,
-		CreatedAt: message.CreatedAt,
-		UpdatedAt: message.UpdatedAt,
+		MessageID:      message.ID,
+		ChatID:         message.ChatId,
+		SenderID:       message.SenderId,
+		SenderNickname: message.SenderNickname,
+		Content:        message.Content,
+		CreatedAt:      message.CreatedAt,
+		UpdatedAt:      message.UpdatedAt,
 	}
 
 	event := events.NewWebSocketEvent(events.EventMessageCreated, chatID, eventData)
@@ -71,7 +72,7 @@ func (mu *MessageUsecase) SendMessage(chatID, senderID int, content string) (*dt
 
 // UpdateMessage updates an existing message
 func (mu *MessageUsecase) UpdateMessage(messageID, userID int, newContent string) (*dto.MessageResponse, error) {
-	// 기존 메시지를 먼저 조회
+	// Get original message
 	originalMessage, err := mu.messageRepo.FindById(messageID)
 	if err != nil {
 		return nil, errors.New("message not found")
@@ -81,13 +82,13 @@ func (mu *MessageUsecase) UpdateMessage(messageID, userID int, newContent string
 		return nil, errors.New("unauthorized to update this message")
 	}
 
-	// 메시지 업데이트
+	// Update message
 	updatedMessage := &models.Message{
 		ID:        originalMessage.ID,
 		ChatId:    originalMessage.ChatId,
 		SenderId:  originalMessage.SenderId,
 		Content:   newContent,
-		CreatedAt: originalMessage.CreatedAt, // 원본 생성 시간 유지
+		CreatedAt: originalMessage.CreatedAt,
 		UpdatedAt: time.Now(),
 	}
 
@@ -97,12 +98,13 @@ func (mu *MessageUsecase) UpdateMessage(messageID, userID int, newContent string
 
 	// Create and broadcast WebSocket event
 	eventData := &events.MessageEventData{
-		MessageID: updatedMessage.ID,
-		ChatID:    updatedMessage.ChatId,
-		SenderID:  updatedMessage.SenderId,
-		Content:   updatedMessage.Content,
-		CreatedAt: updatedMessage.CreatedAt, // 원본 생성 시간 포함
-		UpdatedAt: updatedMessage.UpdatedAt,
+		MessageID:      updatedMessage.ID,
+		ChatID:         updatedMessage.ChatId,
+		SenderID:       updatedMessage.SenderId,
+		SenderNickname: updatedMessage.SenderNickname,
+		Content:        updatedMessage.Content,
+		CreatedAt:      updatedMessage.CreatedAt,
+		UpdatedAt:      updatedMessage.UpdatedAt,
 	}
 
 	event := events.NewWebSocketEvent(events.EventMessageUpdated, updatedMessage.ChatId, eventData)
@@ -130,11 +132,12 @@ func (mu *MessageUsecase) DeleteMessage(messageID, userID int) error {
 
 	// Create and broadcast WebSocket event
 	eventData := &events.MessageEventData{
-		MessageID: message.ID,
-		ChatID:    message.ChatId,
-		SenderID:  message.SenderId,
-		CreatedAt: message.CreatedAt,
-		UpdatedAt: time.Now(),
+		MessageID:      message.ID,
+		ChatID:         message.ChatId,
+		SenderID:       message.SenderId,
+		SenderNickname: message.SenderNickname,
+		CreatedAt:      message.CreatedAt,
+		UpdatedAt:      time.Now(),
 	}
 
 	event := events.NewWebSocketEvent(events.EventMessageDeleted, message.ChatId, eventData)
@@ -143,4 +146,44 @@ func (mu *MessageUsecase) DeleteMessage(messageID, userID int) error {
 	}
 
 	return nil
+}
+
+// GetChatMessages retrieves messages for a chat with cursor-based pagination
+func (mu *MessageUsecase) GetChatMessages(chatId int, cursor int) (*dto.ChatMessagesResponse, error) {
+	// Verify chat exists
+	chat, err := mu.chatRepo.FindById(chatId)
+	if err != nil {
+		return nil, errors.New("chat not found")
+	}
+
+	// Get messages
+	messages, err := mu.messageRepo.FindByChatId(chatId, cursor, 50)
+	if err != nil {
+		return nil, err
+	}
+
+	// Get last message ID for the first page
+	var lastMessageId int
+	if cursor == 0 {
+		lastMessageId, err = mu.messageRepo.GetLastMessageId(chatId)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	// Create response
+	response := &dto.ChatMessagesResponse{
+		ChatId:        chat.ID,
+		Messages:      dto.NewMessageResponseList(messages),
+		LastMessageId: lastMessageId,
+		HasMore:       len(messages) == 50,
+		NextCursor:    0,
+	}
+
+	// Set next cursor if there are more messages
+	if len(messages) > 0 {
+		response.NextCursor = messages[len(messages)-1].ID
+	}
+
+	return response, nil
 }

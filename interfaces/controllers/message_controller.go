@@ -4,6 +4,7 @@ import (
 	"github.com/f1rstid/realtime-chat/application/usecase"
 	"github.com/f1rstid/realtime-chat/interfaces"
 	"github.com/gofiber/fiber/v2"
+	"log"
 )
 
 // SendMessageRequest represents the request for sending a message
@@ -143,4 +144,40 @@ func (mc *MessageController) DeleteMessage(c *fiber.Ctx) error {
 	}
 
 	return interfaces.SendSuccess(c, "메시지가 삭제되었습니다")
+}
+
+// GetChatMessages godoc
+// @Summary      채팅방 메시지 조회
+// @Description  채팅방의 메시지를 페이지네이션하여 조회합니다. 한 번에 50개의 메시지를 가져오며, 무한 스크롤을 지원합니다.
+// @Tags         Message
+// @Accept       json
+// @Produce      json
+// @Param        chatId   path      int  true  "채팅방 ID"
+// @Param        cursor   query     int  false "커서 (이전 페이지의 마지막 메시지 ID, 첫 페이지는 0 또는 생략)"
+// @Success      200  {object}  common.MessageListResponse
+// @Failure      400  {object}  common.ErrInvalidRequest
+// @Failure      404  {object}  common.ErrChatNotFound
+// @Failure      500  {object}  common.ErrInternalServer
+// @Security     Bearer
+// @Router       /api/chats/{chatId}/messages [get]
+func (mc *MessageController) GetChatMessages(c *fiber.Ctx) error {
+	chatId, err := c.ParamsInt("chatId")
+	if err != nil {
+		return interfaces.SendBadRequest(c, "잘못된 채팅방 ID입니다")
+	}
+
+	cursor := c.QueryInt("cursor", 0)
+
+	messages, err := mc.messageUseCase.GetChatMessages(chatId, cursor)
+	if err != nil {
+		switch err.Error() {
+		case "chat not found":
+			return interfaces.SendNotFound(c, "채팅방")
+		default:
+			log.Println(err)
+			return interfaces.SendInternalError(c)
+		}
+	}
+
+	return interfaces.SendSuccess(c, messages)
 }

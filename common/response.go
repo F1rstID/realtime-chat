@@ -61,12 +61,13 @@ type ChatData struct {
 
 // MessageData represents message information
 type MessageData struct {
-	ID        int    `json:"id" example:"1"`
-	ChatID    int    `json:"chatId" example:"1"`
-	SenderID  int    `json:"senderId" example:"1"`
-	Content   string `json:"content" example:"안녕하세요"`
-	CreatedAt string `json:"createdAt" example:"2024-03-23T12:00:00Z"`
-	UpdatedAt string `json:"updatedAt" example:"2024-03-23T12:00:00Z"`
+	ID             int    `json:"id" example:"1"`
+	ChatID         int    `json:"chatId" example:"1"`
+	SenderID       int    `json:"senderId" example:"1"`
+	SenderNickname string `json:"senderNickname" example:"홍길동"`
+	Content        string `json:"content" example:"안녕하세요"`
+	CreatedAt      string `json:"createdAt" example:"2024-03-23T12:00:00Z"`
+	UpdatedAt      string `json:"updatedAt" example:"2024-03-23T12:00:00Z"`
 }
 
 // Predefined responses
@@ -226,6 +227,20 @@ type MessageResponse struct {
 	Success bool        `json:"success" example:"true"`
 	Code    int         `json:"code" example:"2000"`
 	Data    MessageData `json:"data"`
+}
+
+type MessageListData struct {
+	ChatId        int           `json:"chatId" example:"1"`
+	Messages      []MessageData `json:"messages"`
+	LastMessageId int           `json:"lastMessageId" example:"100"`
+	HasMore       bool          `json:"hasMore" example:"true"`
+	NextCursor    int           `json:"nextCursor" example:"50"`
+}
+
+type MessageListResponse struct {
+	Success bool            `json:"success" example:"true"`
+	Code    int             `json:"code" example:"2000"`
+	Data    MessageListData `json:"data"`
 }
 
 type CreateChatRequest struct {

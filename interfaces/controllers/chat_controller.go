@@ -14,7 +14,7 @@ type CreatePrivateChatRequest struct {
 // CreateGroupChatRequest represents the request for creating a group chat
 type CreateGroupChatRequest struct {
 	Name    string `json:"name" example:"Team Chat" validate:"required"`
-	UserIDs []int  `json:"userIds" example:"[1,2,3] validate:"required"`
+	UserIDs []int  `json:"userIds" example:"[1,2,3]" validate:"required"`
 }
 
 type ChatController struct {
@@ -38,13 +38,12 @@ func NewChatController(
 // @Tags         Chat
 // @Accept       json
 // @Produce      json
-// @Param        user1_id path int true "사용자1 ID"
-// @Param        user2_id path int true "사용자2 ID"
+// @Param        request body CreatePrivateChatRequest true "상대 사용자ID"
 // @Success      201  {object}  common.ChatResponse
 // @Failure      400  {object}  common.ErrInvalidRequest
 // @Failure      500  {object}  common.ErrInternalServer
 // @Security     Bearer
-// @Router       /api/chats/private/{user1_id}/{user2_id} [post]
+// @Router       /api/chats/private [post]
 func (cc *ChatController) CreatePrivateChat(c *fiber.Ctx) error {
 	var req CreatePrivateChatRequest
 	if err := c.BodyParser(&req); err != nil {

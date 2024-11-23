@@ -31,6 +31,18 @@ definitions:
         example: true
         type: boolean
     type: object
+  common.ErrChatNotFound:
+    properties:
+      code:
+        example: 4007
+        type: integer
+      data:
+        example: 채팅방을 찾을 수 없습니다
+        type: string
+      success:
+        example: false
+        type: boolean
+    type: object
   common.ErrEmailExists:
     properties:
       code:
@@ -131,9 +143,42 @@ definitions:
       senderId:
         example: 1
         type: integer
+      senderNickname:
+        example: 홍길동
+        type: string
       updatedAt:
         example: "2024-03-23T12:00:00Z"
         type: string
+    type: object
+  common.MessageListData:
+    properties:
+      chatId:
+        example: 1
+        type: integer
+      hasMore:
+        example: true
+        type: boolean
+      lastMessageId:
+        example: 100
+        type: integer
+      messages:
+        items:
+          $ref: '#/definitions/common.MessageData'
+        type: array
+      nextCursor:
+        example: 50
+        type: integer
+    type: object
+  common.MessageListResponse:
+    properties:
+      code:
+        example: 2000
+        type: integer
+      data:
+        $ref: '#/definitions/common.MessageListData'
+      success:
+        example: true
+        type: boolean
     type: object
   common.MessageResponse:
     properties:
@@ -173,6 +218,12 @@ definitions:
         type: string
     type: object
   controllers.CreateGroupChatRequest:
+    type: object
+  controllers.CreatePrivateChatRequest:
+    properties:
+      targetId:
+        example: 1
+        type: integer
     type: object
   controllers.LoginRequest:
     properties:
@@ -307,6 +358,45 @@ paths:
       summary: 사용자 등록
       tags:
       - Auth
+  /api/chats/{chatId}/messages:
+    get:
+      consumes:
+      - application/json
+      description: 채팅방의 메시지를 페이지네이션하여 조회합니다. 한 번에 50개의 메시지를 가져오며, 무한 스크롤을 지원합니다.
+      parameters:
+      - description: 채팅방 ID
+        in: path
+        name: chatId
+        required: true
+        type: integer
+      - description: 커서 (이전 페이지의 마지막 메시지 ID, 첫 페이지는 0 또는 생략)
+        in: query
+        name: cursor
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.MessageListResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.ErrInvalidRequest'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/common.ErrChatNotFound'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.ErrInternalServer'
+      security:
+      - Bearer: []
+      summary: 채팅방 메시지 조회
+      tags:
+      - Message
   /api/chats/group:
     post:
       consumes:
@@ -339,22 +429,18 @@ paths:
       summary: 그룹 채팅 생성
       tags:
       - Chat
-  /api/chats/private/{user1_id}/{user2_id}:
+  /api/chats/private:
     post:
       consumes:
       - application/json
       description: 두 사용자 간의 1:1 채팅을 생성합니다
       parameters:
-      - description: 사용자1 ID
-        in: path
-        name: user1_id
+      - description: 상대 사용자ID
+        in: body
+        name: request
         required: true
-        type: integer
-      - description: 사용자2 ID
-        in: path
-        name: user2_id
-        required: true
-        type: integer
+        schema:
+          $ref: '#/definitions/controllers.CreatePrivateChatRequest'
       produces:
       - application/json
       responses:

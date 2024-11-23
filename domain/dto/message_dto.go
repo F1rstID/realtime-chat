@@ -1,4 +1,3 @@
-// domain/dto/message_dto.go
 package dto
 
 import (
@@ -9,23 +8,34 @@ import (
 
 // MessageResponse is a DTO for message responses
 type MessageResponse struct {
-	ID        int       `json:"id"`
-	ChatID    int       `json:"chatId"`
-	SenderID  int       `json:"senderId"`
-	Content   string    `json:"content"`
-	CreatedAt time.Time `json:"createdAt"`
-	UpdatedAt time.Time `json:"updatedAt"`
+	ID             int       `json:"id"`
+	ChatID         int       `json:"chatId"`
+	SenderID       int       `json:"senderId"`
+	SenderNickname string    `json:"senderNickname"`
+	Content        string    `json:"content"`
+	CreatedAt      time.Time `json:"createdAt"`
+	UpdatedAt      time.Time `json:"updatedAt"`
+}
+
+// ChatMessagesResponse represents the response for chat messages with pagination
+type ChatMessagesResponse struct {
+	ChatId        int               `json:"chatId"`
+	Messages      []MessageResponse `json:"messages"`
+	LastMessageId int               `json:"lastMessageId"`
+	HasMore       bool              `json:"hasMore"`
+	NextCursor    int               `json:"nextCursor"`
 }
 
 // NewMessageResponse creates a new MessageResponse from a Message model
 func NewMessageResponse(message *models.Message) *MessageResponse {
 	return &MessageResponse{
-		ID:        message.ID,
-		ChatID:    message.ChatId,
-		SenderID:  message.SenderId,
-		Content:   message.Content,
-		CreatedAt: message.CreatedAt,
-		UpdatedAt: message.UpdatedAt,
+		ID:             message.ID,
+		ChatID:         message.ChatId,
+		SenderID:       message.SenderId,
+		SenderNickname: message.SenderNickname,
+		Content:        message.Content,
+		CreatedAt:      message.CreatedAt,
+		UpdatedAt:      message.UpdatedAt,
 	}
 }
 

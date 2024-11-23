@@ -179,7 +179,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/chats/private/{user1_id}/{user2_id}": {
+        "/api/chats/private": {
             "post": {
                 "security": [
                     {
@@ -199,18 +199,13 @@ const docTemplate = `{
                 "summary": "1:1 채팅 생성",
                 "parameters": [
                     {
-                        "type": "integer",
-                        "description": "사용자1 ID",
-                        "name": "user1_id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "사용자2 ID",
-                        "name": "user2_id",
-                        "in": "path",
-                        "required": true
+                        "description": "상대 사용자ID",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controllers.CreatePrivateChatRequest"
+                        }
                     }
                 ],
                 "responses": {
@@ -224,6 +219,67 @@ const docTemplate = `{
                         "description": "Bad Request",
                         "schema": {
                             "$ref": "#/definitions/common.ErrInvalidRequest"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/common.ErrInternalServer"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/chats/{chatId}/messages": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "채팅방의 메시지를 페이지네이션하여 조회합니다. 한 번에 50개의 메시지를 가져오며, 무한 스크롤을 지원합니다.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Message"
+                ],
+                "summary": "채팅방 메시지 조회",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "채팅방 ID",
+                        "name": "chatId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "커서 (이전 페이지의 마지막 메시지 ID, 첫 페이지는 0 또는 생략)",
+                        "name": "cursor",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.MessageListResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/common.ErrInvalidRequest"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/common.ErrChatNotFound"
                         }
                     },
                     "500": {
@@ -450,6 +506,23 @@ const docTemplate = `{
                 }
             }
         },
+        "common.ErrChatNotFound": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 4007
+                },
+                "data": {
+                    "type": "string",
+                    "example": "채팅방을 찾을 수 없습니다"
+                },
+                "success": {
+                    "type": "boolean",
+                    "example": false
+                }
+            }
+        },
         "common.ErrEmailExists": {
             "type": "object",
             "properties": {
@@ -591,9 +664,56 @@ const docTemplate = `{
                     "type": "integer",
                     "example": 1
                 },
+                "senderNickname": {
+                    "type": "string",
+                    "example": "홍길동"
+                },
                 "updatedAt": {
                     "type": "string",
                     "example": "2024-03-23T12:00:00Z"
+                }
+            }
+        },
+        "common.MessageListData": {
+            "type": "object",
+            "properties": {
+                "chatId": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "hasMore": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "lastMessageId": {
+                    "type": "integer",
+                    "example": 100
+                },
+                "messages": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/common.MessageData"
+                    }
+                },
+                "nextCursor": {
+                    "type": "integer",
+                    "example": 50
+                }
+            }
+        },
+        "common.MessageListResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 2000
+                },
+                "data": {
+                    "$ref": "#/definitions/common.MessageListData"
+                },
+                "success": {
+                    "type": "boolean",
+                    "example": true
                 }
             }
         },
@@ -652,6 +772,15 @@ const docTemplate = `{
         },
         "controllers.CreateGroupChatRequest": {
             "type": "object"
+        },
+        "controllers.CreatePrivateChatRequest": {
+            "type": "object",
+            "properties": {
+                "targetId": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
         },
         "controllers.LoginRequest": {
             "type": "object",
