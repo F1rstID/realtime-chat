@@ -32,6 +32,28 @@ func NewChatController(
 	}
 }
 
+// GetUserChats godoc
+// @Summary      사용자의 채팅방 목록 조회
+// @Description  현재 로그인한 사용자가 참여중인 모든 채팅방 목록을 조회합니다. 각 채팅방의 마지막 메시지 정보도 함께 제공됩니다.
+// @Tags         Chat
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  common.ChatListResponse
+// @Failure      401  {object}  common.ErrUnauthorized
+// @Failure      500  {object}  common.ErrInternalServer
+// @Security     Bearer
+// @Router       /api/chats [get]
+func (cc *ChatController) GetUserChats(c *fiber.Ctx) error {
+	userID := c.Locals("userId").(int)
+
+	chats, err := cc.chatUseCase.GetUserChats(userID)
+	if err != nil {
+		return interfaces.SendInternalError(c)
+	}
+
+	return interfaces.SendSuccess(c, chats)
+}
+
 // CreatePrivateChat godoc
 // @Summary      1:1 채팅 생성
 // @Description  두 사용자 간의 1:1 채팅을 생성합니다

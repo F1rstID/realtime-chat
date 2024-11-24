@@ -87,3 +87,33 @@
 [37m2024-11-24 18:38:41 [INFO][32m main.go:100: Server is starting on port 5050[0m
 [37m2024-11-24 18:38:41 [INFO][32m main.go:101: Swagger documentation is available at http://localhost:5050/swagger/[0m
 [37m2024-11-24 18:43:01 [INFO][32m main.go:112: Shutting down server...[0m
+[37m2024-11-24 18:56:13 [INFO][32m main.go:101: Server is starting on port 5050[0m
+[37m2024-11-24 18:56:13 [INFO][32m main.go:102: Swagger documentation is available at http://localhost:5050/swagger/[0m
+[37m2024-11-24 18:56:25 [INFO][32m main.go:113: Shutting down server...[0m
+[37m2024-11-24 18:56:34 [INFO][32m main.go:101: Server is starting on port 5050[0m
+[37m2024-11-24 18:56:34 [INFO][32m main.go:102: Swagger documentation is available at http://localhost:5050/swagger/[0m
+[37m2024-11-24 18:57:13 [INFO][32m main.go:113: Shutting down server...[0m
+[37m2024-11-24 18:57:19 [INFO][32m main.go:101: Server is starting on port 5050[0m
+[37m2024-11-24 18:57:19 [INFO][32m main.go:102: Swagger documentation is available at http://localhost:5050/swagger/[0m
+[37m2024-11-24 18:57:29 [INFO][32m main.go:113: Shutting down server...[0m
+[37m2024-11-24 18:57:40 [INFO][32m main.go:101: Server is starting on port 5050[0m
+[37m2024-11-24 18:57:40 [INFO][32m main.go:102: Swagger documentation is available at http://localhost:5050/swagger/[0m
+[37m2024-11-24 18:58:20 [INFO][32m main.go:113: Shutting down server...[0m
+[37m2024-11-24 18:58:26 [INFO][32m main.go:101: Server is starting on port 5050[0m
+[37m2024-11-24 18:58:26 [INFO][32m main.go:102: Swagger documentation is available at http://localhost:5050/swagger/[0m
+[37m2024-11-24 18:59:12 [INFO][32m main.go:113: Shutting down server...[0m
+[37m2024-11-24 18:59:18 [INFO][32m main.go:101: Server is starting on port 5050[0m
+[37m2024-11-24 18:59:18 [INFO][32m main.go:102: Swagger documentation is available at http://localhost:5050/swagger/[0m
+[37m2024-11-24 19:00:43 [INFO][32m main.go:113: Shutting down server...[0m
+[37m2024-11-24 19:00:50 [INFO][32m main.go:101: Server is starting on port 5050[0m
+[37m2024-11-24 19:00:50 [INFO][32m main.go:102: Swagger documentation is available at http://localhost:5050/swagger/[0m
+[37m2024-11-24 19:16:23 [INFO][32m main.go:113: Shutting down server...[0m
+[37m2024-11-24 19:18:29 [INFO][32m main.go:101: Server is starting on port 5050[0m
+[37m2024-11-24 19:18:29 [INFO][32m main.go:102: Swagger documentation is available at http://localhost:5050/swagger/[0m
+[37m2024-11-24 19:20:20 [INFO][32m main.go:113: Shutting down server...[0m
+[37m2024-11-24 19:20:27 [INFO][32m main.go:101: Server is starting on port 5050[0m
+[37m2024-11-24 19:20:27 [INFO][32m main.go:102: Swagger documentation is available at http://localhost:5050/swagger/[0m
+[37m2024-11-24 20:31:40 [INFO][32m main.go:113: Shutting down server...[0m
+[37m2024-11-24 20:31:47 [INFO][32m main.go:101: Server is starting on port 5050[0m
+[37m2024-11-24 20:31:47 [INFO][32m main.go:102: Swagger documentation is available at http://localhost:5050/swagger/[0m
+[37m2024-11-24 20:31:58 [INFO][32m main.go:113: Shutting down server...[0m

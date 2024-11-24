@@ -2,8 +2,10 @@ package usecase
 
 import (
 	"errors"
+	"github.com/f1rstid/realtime-chat/domain/dto"
 	"github.com/f1rstid/realtime-chat/domain/models"
 	"github.com/f1rstid/realtime-chat/domain/repositories"
+	"log"
 )
 
 type ChatUsecase struct {
@@ -24,7 +26,37 @@ func NewChatUsecase(
 	}
 }
 
-// CreatePrivateChat creates a 1:1 chat between two users
+// GetUserChats returns all chats for a user with their last messages
+func (cu *ChatUsecase) GetUserChats(userID int) ([]dto.ChatResponse, error) {
+	// Verify user exists
+	_, err := cu.userRepo.FindByID(userID)
+	if err != nil {
+		return nil, errors.New("user not found")
+	}
+
+	// Get user's chats
+	chats, err := cu.chatRepo.GetUserChats(userID)
+	if err != nil {
+		return nil, err
+	}
+
+	// Get chat IDs
+	chatIDs := make([]int, len(chats))
+	for i, chat := range chats {
+		chatIDs[i] = chat.ID
+	}
+
+	// Get last messages for all chats
+	lastMessages, err := cu.chatRepo.GetLastMessages(chatIDs)
+	if err != nil {
+		log.Println("Failed to get last messages:", err)
+		return nil, err
+	}
+
+	// Create response
+	return dto.NewChatListResponse(chats, lastMessages), nil
+}
+
 func (cu *ChatUsecase) CreatePrivateChat(user1ID, user2ID int) (*models.Chat, error) {
 	// Verify both users exist
 	user1, err := cu.userRepo.FindByID(user1ID)
@@ -77,17 +109,10 @@ func (cu *ChatUsecase) CreateGroupChat(name string, userIDs []int) (*models.Chat
 	// Add users to the chat group
 	for _, userID := range userIDs {
 		if err := cu.chatRepo.AddUserToChat(chat.ID, userID); err != nil {
-			// If there's an error, we might want to clean up the created chat
 			cu.chatRepo.Delete(chat.ID)
 			return nil, errors.New("failed to add user to chat group")
 		}
 	}
 
 	return chat, nil
-}
-
-// GetUserChats returns all chats for a user
-func (cu *ChatUsecase) GetUserChats(userID int) ([]models.Chat, error) {
-	
-	return nil, nil
 }

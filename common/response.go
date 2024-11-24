@@ -243,6 +243,12 @@ type MessageListResponse struct {
 	Data    MessageListData `json:"data"`
 }
 
+type ChatListResponse struct {
+	Success bool       `json:"success" example:"true"`
+	Code    int        `json:"code" example:"2000"`
+	Data    []ChatData `json:"data"`
+}
+
 type CreateChatRequest struct {
 	Name    string `json:"name" example:"Team Chat" validate:"required"`
 	UserIDs []int  `json:"user_ids" example:"[1,2,3]" validate:"required"`

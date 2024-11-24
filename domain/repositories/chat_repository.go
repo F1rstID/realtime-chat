@@ -12,4 +12,5 @@ type ChatRepository interface {
 	RemoveUserFromChat(chatID, userID int) error
 	GetChatUsers(chatID int) ([]models.User, error)
 	GetUserChats(userID int) ([]models.Chat, error)
+	GetLastMessages(chatIDs []int) (map[int]*models.Message, error)
 }

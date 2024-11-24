@@ -51,6 +51,7 @@ func SetRoutes(app *fiber.App, config *config.Config) {
 
 	// Chat routes
 	chats := api.Group("/chats")
+	chats.Get("/", chatController.GetUserChats)
 	chats.Post("/private", chatController.CreatePrivateChat)
 	chats.Post("/group", chatController.CreateGroupChat)
 	api.Get("/chats/:chatId/messages", messageController.GetChatMessages)

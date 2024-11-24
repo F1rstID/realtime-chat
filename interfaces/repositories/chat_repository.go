@@ -1,9 +1,11 @@
 package repositories
 
 import (
+	"fmt"
 	"github.com/f1rstid/realtime-chat/domain/models"
 	"github.com/f1rstid/realtime-chat/domain/repositories"
 	"github.com/jmoiron/sqlx"
+	"strings"
 )
 
 type ChatRepository struct {
@@ -50,7 +52,7 @@ func (r *ChatRepository) AddUserToChat(chatID, userID int) error {
 }
 
 func (r *ChatRepository) RemoveUserFromChat(chatID, userID int) error {
-	query := `DELETE FROM chatGroups WHERE chatId = $1 AND userId = $2`
+	query := `DELETE FROM chat_groups WHERE chatId = $1 AND userId = $2`
 	_, err := r.DB.Exec(query, chatID, userID)
 	return err
 }
@@ -60,21 +62,69 @@ func (r *ChatRepository) GetChatUsers(chatID int) ([]models.User, error) {
 	query := `
 		SELECT u.* 
 		FROM users u
-		JOIN chatGroups cg ON u.id = cg.userId
+		JOIN chat_groups cg ON u.id = cg.userId
 		WHERE cg.chatId = $1
 	`
 	err := r.DB.Select(&users, query, chatID)
+
 	return users, err
 }
 
 func (r *ChatRepository) GetUserChats(userID int) ([]models.Chat, error) {
 	var chats []models.Chat
 	query := `
-		SELECT c.* 
+		SELECT c.id, c.name, c.createdAt 
 		FROM chats c
-		JOIN chatGroups cg ON c.id = cg.chatId
+		JOIN chat_groups cg ON c.id = cg.chatId
 		WHERE cg.userId = $1
 	`
 	err := r.DB.Select(&chats, query, userID)
 	return chats, err
+}
+
+// GetLastMessages retrieves the last message for each chat
+func (r *ChatRepository) GetLastMessages(chatIDs []int) (map[int]*models.Message, error) {
+	if len(chatIDs) == 0 {
+		return make(map[int]*models.Message), nil
+	}
+
+	// Create placeholders for the IN clause
+	placeholders := make([]string, len(chatIDs))
+	args := make([]interface{}, len(chatIDs))
+	for i := range chatIDs {
+		placeholders[i] = fmt.Sprintf("$%d", i+1)
+		args[i] = chatIDs[i]
+	}
+
+	query := fmt.Sprintf(`
+        WITH RankedMessages AS (
+            SELECT m.id,
+                   m.chatId,
+                   m.senderId,
+                   m.content,
+                   m.createdAt,
+                   m.updatedAt,
+                   u.nickname as senderNickname,
+                   ROW_NUMBER() OVER (PARTITION BY m.chatId ORDER BY m.createdAt DESC) as rn
+            FROM messages m
+            JOIN users u ON m.senderId = u.id
+            WHERE m.chatId IN (%s)
+        )
+        SELECT id, chatId, senderId, content, createdAt, updatedAt, senderNickname 
+        FROM RankedMessages 
+        WHERE rn = 1
+    `, strings.Join(placeholders, ","))
+
+	var messages []models.Message
+	err := r.DB.Select(&messages, query, args...)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get last messages: %v", err)
+	}
+
+	result := make(map[int]*models.Message)
+	for i := range messages {
+		result[messages[i].ChatId] = &messages[i]
+	}
+
+	return result, nil
 }
