@@ -524,6 +524,9 @@ const docTemplate = `{
                     "type": "integer",
                     "example": 1
                 },
+                "lastMessage": {
+                    "$ref": "#/definitions/common.LastMessage"
+                },
                 "name": {
                     "type": "string",
                     "example": "개발팀 채팅방"
@@ -698,6 +701,27 @@ const docTemplate = `{
                 "success": {
                     "type": "boolean",
                     "example": false
+                }
+            }
+        },
+        "common.LastMessage": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string",
+                    "example": "안녕하세요"
+                },
+                "senderId": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "senderNickname": {
+                    "type": "string",
+                    "example": "홍길동"
+                },
+                "sentAt": {
+                    "type": "string",
+                    "example": "2024-03-23T12:00:00Z"
                 }
             }
         },

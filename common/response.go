@@ -52,11 +52,19 @@ type UserData struct {
 	CreatedAt string `json:"createdAt" example:"2024-03-23T12:00:00Z"`
 }
 
+type LastMessage struct {
+	SenderID       int    `json:"senderId" example:"1"`
+	SenderNickname string `json:"senderNickname" example:"홍길동"`
+	Content        string `json:"content" example:"안녕하세요"`
+	SentAt         string `json:"sentAt" example:"2024-03-23T12:00:00Z"`
+}
+
 // ChatData represents chat information
 type ChatData struct {
-	ID        int    `json:"id" example:"1"`
-	Name      string `json:"name" example:"개발팀 채팅방"`
-	CreatedAt string `json:"createdAt" example:"2024-03-23T12:00:00Z"`
+	ID          int          `json:"id" example:"1"`
+	Name        string       `json:"name" example:"개발팀 채팅방"`
+	CreatedAt   string       `json:"createdAt" example:"2024-03-23T12:00:00Z"`
+	LastMessage *LastMessage `json:"lastMessage,omitempty"`
 }
 
 // MessageData represents message information

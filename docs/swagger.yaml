@@ -16,6 +16,8 @@ definitions:
       id:
         example: 1
         type: integer
+      lastMessage:
+        $ref: '#/definitions/common.LastMessage'
       name:
         example: 개발팀 채팅방
         type: string
@@ -139,6 +141,21 @@ definitions:
       success:
         example: false
         type: boolean
+    type: object
+  common.LastMessage:
+    properties:
+      content:
+        example: 안녕하세요
+        type: string
+      senderId:
+        example: 1
+        type: integer
+      senderNickname:
+        example: 홍길동
+        type: string
+      sentAt:
+        example: "2024-03-23T12:00:00Z"
+        type: string
     type: object
   common.LoginResponse:
     properties:
