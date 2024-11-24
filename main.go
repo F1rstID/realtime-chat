@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"syscall"
 
 	"github.com/f1rstid/realtime-chat/config"
@@ -49,12 +50,24 @@ func main() {
 		log.Fatal(err)
 	}
 
+	// 데이터베이스 디렉토리 확인 및 생성
+	dbDir := filepath.Dir(config.Database.DSN)
+	if err := os.MkdirAll(dbDir, 0755); err != nil {
+		logger.Error("Failed to create database directory: %v", err)
+		log.Fatal(err)
+	}
+
 	// 데이터베이스 초기화
 	if err := sqlite.InitDB(config.Database.DSN); err != nil {
 		logger.Error("Failed to initialize database: %v", err)
 		log.Fatal(err)
 	}
-	sqlite.Migrate()
+
+	// 데이터베이스 마이그레이션
+	if err := sqlite.Migrate(); err != nil {
+		logger.Error("Failed to migrate database: %v", err)
+		log.Fatal(err)
+	}
 	defer sqlite.CloseDB()
 
 	// Fiber 앱 생성

@@ -18,9 +18,6 @@ RUN go mod download && \
 # Copy source code
 COPY . .
 
-# Tidy and verify dependencies
-RUN go mod tidy
-
 # Generate Swagger documentation
 RUN swag init
 
@@ -37,7 +34,7 @@ RUN apk add --no-cache sqlite-libs ca-certificates tzdata
 RUN adduser -D -g '' appuser
 
 # Create necessary directories and set permissions
-RUN mkdir -p /app/logs /app/docs && \
+RUN mkdir -p /app/logs /app/docs /app/data && \
     chown -R appuser:appuser /app
 
 # Set working directory
@@ -46,6 +43,9 @@ WORKDIR /app
 # Copy binary and swagger docs from builder
 COPY --from=builder /app/main .
 COPY --from=builder /app/docs ./docs
+
+# Create volume mount points
+VOLUME ["/app/data"]
 
 # Set ownership
 RUN chown -R appuser:appuser /app
@@ -60,6 +60,7 @@ EXPOSE 5050
 ENV GO_ENV=production
 ENV SERVER_PORT=5050
 ENV SERVER_URL=0.0.0.0
+ENV DATABASE_DSN=/app/data/sqlite.db
 
 # Command to run the application
 CMD ["./main"]
