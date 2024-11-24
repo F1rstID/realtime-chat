@@ -148,3 +148,8 @@
 [37m2024-11-24 01:30:24 [REQUEST][34m request_logger.go:22: Method: GET, Path: /api/chats/1/messages, IP: 127.0.0.1, Status: 500, Duration: 7.986083ms[0m
 [37m2024-11-24 01:30:54 [REQUEST][34m request_logger.go:22: Method: GET, Path: /api/chats/1/messages, IP: 127.0.0.1, Status: 200, Duration: 9.4895ms[0m
 [37m2024-11-24 01:31:06 [REQUEST][34m request_logger.go:22: Method: GET, Path: /api/chats/1/messages, IP: 127.0.0.1, Status: 200, Duration: 1.385584ms[0m
+[37m2024-11-24 14:42:30 [REQUEST][34m request_logger.go:22: Method: GET, Path: index.html, IP: 127.0.0.1, Status: 200, Duration: 5.225042ms[0m
+[37m2024-11-24 14:42:30 [REQUEST][34m request_logger.go:22: Method: GET, Path: swagger-ui-standalone-preset.js, IP: 127.0.0.1, Status: 200, Duration: 1.32475ms[0m
+[37m2024-11-24 14:42:30 [REQUEST][34m request_logger.go:22: Method: GET, Path: swagger-ui-bundle.js, IP: 127.0.0.1, Status: 200, Duration: 65.958µs[0m
+[37m2024-11-24 14:42:30 [REQUEST][34m request_logger.go:22: Method: GET, Path: swagger-ui.css, IP: 127.0.0.1, Status: 200, Duration: 23.875µs[0m
+[37m2024-11-24 14:42:30 [REQUEST][34m request_logger.go:22: Method: GET, Path: doc.json, IP: 127.0.0.1, Status: 200, Duration: 1.22375ms[0m

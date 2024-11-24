@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/f1rstid/realtime-chat/docs"
 	"log"
 	"os"
 	"os/signal"
@@ -69,6 +70,8 @@ func main() {
 		AllowMethods: "GET, POST, PUT, DELETE",
 	}))
 	app.Use(middlewares.RequestLogger())
+
+	docs.SwaggerInfo.Host = config.ServerURL + ":" + config.ServerPort
 
 	// Swagger 설정
 	app.Get("/swagger/*", swagger.New(swagger.Config{
