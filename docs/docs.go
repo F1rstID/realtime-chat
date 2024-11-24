@@ -711,6 +711,10 @@ const docTemplate = `{
                     "type": "string",
                     "example": "안녕하세요"
                 },
+                "createdAt": {
+                    "type": "string",
+                    "example": "2024-03-23T12:00:00Z"
+                },
                 "senderId": {
                     "type": "integer",
                     "example": 1
@@ -718,10 +722,6 @@ const docTemplate = `{
                 "senderNickname": {
                     "type": "string",
                     "example": "홍길동"
-                },
-                "sentAt": {
-                    "type": "string",
-                    "example": "2024-03-23T12:00:00Z"
                 }
             }
         },

@@ -17,7 +17,7 @@ type LastMessageInfo struct {
 	Content        string    `json:"content"`
 	SenderID       int       `json:"senderId"`
 	SenderNickname string    `json:"senderNickname"`
-	SentAt         time.Time `json:"sentAt"`
+	CreatedAt      time.Time `json:"createdAt"`
 }
 
 func NewChatResponse(chat *models.Chat, lastMessage *models.Message) *ChatResponse {
@@ -32,7 +32,7 @@ func NewChatResponse(chat *models.Chat, lastMessage *models.Message) *ChatRespon
 			Content:        lastMessage.Content,
 			SenderID:       lastMessage.SenderId,
 			SenderNickname: lastMessage.SenderNickname,
-			SentAt:         lastMessage.CreatedAt,
+			CreatedAt:      lastMessage.CreatedAt,
 		}
 	}
 

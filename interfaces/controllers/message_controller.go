@@ -4,7 +4,6 @@ import (
 	"github.com/f1rstid/realtime-chat/application/usecase"
 	"github.com/f1rstid/realtime-chat/interfaces"
 	"github.com/gofiber/fiber/v2"
-	"log"
 )
 
 // SendMessageRequest represents the request for sending a message
@@ -174,7 +173,6 @@ func (mc *MessageController) GetChatMessages(c *fiber.Ctx) error {
 		case "chat not found":
 			return interfaces.SendNotFound(c, "채팅방")
 		default:
-			log.Println(err)
 			return interfaces.SendInternalError(c)
 		}
 	}

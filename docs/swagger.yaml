@@ -147,14 +147,14 @@ definitions:
       content:
         example: 안녕하세요
         type: string
+      createdAt:
+        example: "2024-03-23T12:00:00Z"
+        type: string
       senderId:
         example: 1
         type: integer
       senderNickname:
         example: 홍길동
-        type: string
-      sentAt:
-        example: "2024-03-23T12:00:00Z"
         type: string
     type: object
   common.LoginResponse:

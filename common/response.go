@@ -56,7 +56,7 @@ type LastMessage struct {
 	SenderID       int    `json:"senderId" example:"1"`
 	SenderNickname string `json:"senderNickname" example:"홍길동"`
 	Content        string `json:"content" example:"안녕하세요"`
-	SentAt         string `json:"sentAt" example:"2024-03-23T12:00:00Z"`
+	CreatedAt      string `json:"createdAt" example:"2024-03-23T12:00:00Z"`
 }
 
 // ChatData represents chat information
