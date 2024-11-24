@@ -2,9 +2,16 @@ package interfaces
 
 // Error codes
 const (
+	// Message codes (1xxx)
+	MessageSendCode   = 1000
+	MessageUpdateCode = 1001
+	MessageDeleteCode = 1002
+
 	// Success codes (2xxx)
 	SuccessCode = 2000
 	CreatedCode = 2001
+	UpdatedCode = 2002
+	DeletedCode = 2003
 
 	// Client error codes (4xxx)
 	InvalidRequestError     = 4000

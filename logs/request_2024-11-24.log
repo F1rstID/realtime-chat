@@ -191,3 +191,14 @@
 [37m2024-11-24 15:54:01 [REQUEST][34m request_logger.go:22: Method: PUT, Path: /api/messages/7, IP: 127.0.0.1, Status: 404, Duration: 304.959µs[0m
 [37m2024-11-24 15:54:39 [REQUEST][34m request_logger.go:22: Method: DELETE, Path: /api/messages/7, IP: 127.0.0.1, Status: 404, Duration: 394.917µs[0m
 [37m2024-11-24 15:54:50 [REQUEST][34m request_logger.go:22: Method: GET, Path: /api/chats/1/messages, IP: 127.0.0.1, Status: 200, Duration: 4.490958ms[0m
+[37m2024-11-24 15:56:46 [REQUEST][34m request_logger.go:22: Method: GET, Path: /ws/1, IP: 127.0.0.1, Status: 101, Duration: 1.648958ms[0m
+[37m2024-11-24 15:57:02 [REQUEST][34m request_logger.go:22: Method: PUT, Path: /api/messages/7, IP: 127.0.0.1, Status: 404, Duration: 2.351416ms[0m
+[37m2024-11-24 15:57:07 [REQUEST][34m request_logger.go:22: Method: PUT, Path: /api/messages/2, IP: 127.0.0.1, Status: 404, Duration: 316.958µs[0m
+[37m2024-11-24 15:57:19 [REQUEST][34m request_logger.go:22: Method: GET, Path: /api/chats/1/messages, IP: 127.0.0.1, Status: 200, Duration: 7.476625ms[0m
+[37m2024-11-24 15:58:00 [REQUEST][34m request_logger.go:22: Method: GET, Path: /ws/1, IP: 127.0.0.1, Status: 101, Duration: 2.508083ms[0m
+[37m2024-11-24 15:58:01 [REQUEST][34m request_logger.go:22: Method: PUT, Path: /api/messages/2, IP: 127.0.0.1, Status: 200, Duration: 8.938958ms[0m
+[37m2024-11-24 15:58:30 [REQUEST][34m request_logger.go:22: Method: DELETE, Path: /api/messages/7, IP: 127.0.0.1, Status: 200, Duration: 2.130917ms[0m
+[37m2024-11-24 16:05:15 [REQUEST][34m request_logger.go:22: Method: GET, Path: /ws/1, IP: 127.0.0.1, Status: 101, Duration: 1.222291ms[0m
+[37m2024-11-24 16:05:22 [REQUEST][34m request_logger.go:22: Method: POST, Path: /api/messages, IP: 127.0.0.1, Status: 201, Duration: 12.872916ms[0m
+[37m2024-11-24 16:06:00 [REQUEST][34m request_logger.go:22: Method: PUT, Path: /api/messages/2, IP: 127.0.0.1, Status: 200, Duration: 5.487917ms[0m
+[37m2024-11-24 16:06:45 [REQUEST][34m request_logger.go:22: Method: DELETE, Path: /api/messages/4, IP: 127.0.0.1, Status: 200, Duration: 8.509708ms[0m

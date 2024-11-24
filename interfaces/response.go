@@ -18,6 +18,8 @@ const (
 	// Success codes (2xxx)
 	StatusSuccess = 2000
 	StatusCreated = 2001
+	StatusUpdated = 2002
+	StatusDeleted = 2003
 
 	// Client error codes (4xxx)
 	StatusBadRequest         = 4000
@@ -50,6 +52,14 @@ func SendSuccess(c *fiber.Ctx, data interface{}) error {
 
 func SendCreated(c *fiber.Ctx, data interface{}) error {
 	return SendResponse(c, fiber.StatusCreated, StatusCreated, true, data)
+}
+
+func SendUpdated(c *fiber.Ctx, data interface{}) error {
+	return SendResponse(c, fiber.StatusOK, StatusUpdated, true, data)
+}
+
+func SendDeleted(c *fiber.Ctx, data interface{}) error {
+	return SendResponse(c, fiber.StatusOK, StatusDeleted, true, data)
 }
 
 func SendError(c *fiber.Ctx, httpStatus, code int, message string) error {

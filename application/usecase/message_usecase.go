@@ -1,3 +1,5 @@
+// application/usecase/message_usecase.go
+
 package usecase
 
 import (
@@ -51,7 +53,7 @@ func (mu *MessageUsecase) SendMessage(chatID, senderID int, content string) (*dt
 		return nil, err
 	}
 
-	// Create and broadcast WebSocket event
+	// Create and broadcast WebSocket event with unified response format
 	eventData := &events.MessageEventData{
 		MessageID:      message.ID,
 		ChatID:         message.ChatId,
@@ -96,7 +98,7 @@ func (mu *MessageUsecase) UpdateMessage(messageID, userID int, newContent string
 		return nil, err
 	}
 
-	// Create and broadcast WebSocket event
+	// Create and broadcast WebSocket event with unified response format
 	eventData := &events.MessageEventData{
 		MessageID:      updatedMessage.ID,
 		ChatID:         updatedMessage.ChatId,
@@ -130,7 +132,7 @@ func (mu *MessageUsecase) DeleteMessage(messageID, userID int) error {
 		return err
 	}
 
-	// Create and broadcast WebSocket event
+	// Create and broadcast WebSocket event with unified response format
 	eventData := &events.MessageEventData{
 		MessageID:      message.ID,
 		ChatID:         message.ChatId,
