@@ -279,3 +279,17 @@ type CreateChatRequest struct {
 type CreatePrivateChatRequest struct {
 	TargetId int `json:"targetId" example:"1"`
 }
+
+type UserListData struct {
+	ID        int    `json:"id" example:"1"`
+	Email     string `json:"email" example:"user@example.com"`
+	Nickname  string `json:"nickname" example:"홍길동"`
+	CreatedAt string `json:"createdAt" example:"2024-03-23T12:00:00Z"`
+}
+
+// UserListResponse represents the response for user list endpoints
+type UserListResponse struct {
+	Success bool           `json:"success" example:"true"`
+	Code    int            `json:"code" example:"2000"`
+	Data    []UserListData `json:"data"`
+}

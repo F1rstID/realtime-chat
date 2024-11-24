@@ -10,9 +10,12 @@ type CreatePrivateChatRequest struct {
 	TargetId int `json:"targetId" example:"1"`
 }
 
+// @Description 그룹 채팅방 생성 요청
 type CreateGroupChatRequest struct {
-	Name    string `json:"name" example:"Team Chat" validate:"required"`
-	UserIDs []int  `json:"userIds" example:"[1,2,3]" validate:"required"`
+	// 채팅방 이름
+	Name string `json:"name" example:"Team Chat"`
+	// 초대할 사용자 ID 목록
+	UserIDs []int `json:"userIds" example:"1,2,3"`
 }
 
 type ChatController struct {
@@ -91,7 +94,7 @@ func (cc *ChatController) CreatePrivateChat(c *fiber.Ctx) error {
 // @Tags         Chat
 // @Accept       json
 // @Produce      json
-// @Param        request body CreateGroupChatRequest true "채팅방 생성 정보"
+// @Param        request body CreateGroupChatRequest true "채팅방 이름, 참여자 ID 목록"
 // @Success      201  {object}  common.ChatResponse
 // @Failure      400  {object}  common.ErrInvalidRequest
 // @Failure      500  {object}  common.ErrInternalServer

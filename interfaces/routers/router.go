@@ -26,17 +26,20 @@ func SetRoutes(app *fiber.App, config *config.Config) {
 
 	// Initialize services
 	authService := services.NewAuthService(config.JWTSecret)
+	userService := services.NewUserService(userRepo)
 
 	// Initialize usecases
 	authUseCase := usecase.NewAuthUsecase(userRepo, authService)
 	chatUseCase := usecase.NewChatUsecase(chatRepo, messageRepo, userRepo)
 	messageUseCase := usecase.NewMessageUsecase(messageRepo, chatRepo, wsHub)
+	userUseCase := usecase.NewUserUseCase(userRepo, userService)
 
 	// Initialize controllers
 	authController := controllers.NewAuthController(authUseCase)
 	chatController := controllers.NewChatController(chatUseCase, messageUseCase)
 	messageController := controllers.NewMessageController(messageUseCase)
 	wsController := controllers.NewWebSocketController(wsHub)
+	userController := controllers.NewUserController(userUseCase)
 
 	// Swagger
 	app.Get("/swagger/*", swagger.HandlerDefault)
@@ -61,6 +64,9 @@ func SetRoutes(app *fiber.App, config *config.Config) {
 	messages.Post("/", messageController.SendMessage)
 	messages.Put("/:id", messageController.UpdateMessage)
 	messages.Delete("/:id", messageController.DeleteMessage)
+
+	users := api.Group("/users")
+	users.Get("/", userController.GetAllUsers) // 새로운 라우트 추가
 
 	// WebSocket routes with authentication
 	app.Use("/ws", middlewares.WebSocketAuthMiddleware(authService))

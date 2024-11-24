@@ -9,4 +9,5 @@ type UserRepository interface {
 	FindByNickname(nickname string) (*models.User, error)
 	Update(user *models.User) error
 	Delete(id int) error
+	FindAllExcept(excludeUserId int) ([]models.User, error)
 }

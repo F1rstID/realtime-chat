@@ -66,3 +66,10 @@ func (r *UserRepository) Delete(id int) error {
 	_, err := r.DB.Exec(query, id)
 	return err
 }
+
+func (r *UserRepository) FindAllExcept(excludeUserId int) ([]models.User, error) {
+	var users []models.User
+	query := `SELECT id, email, nickname, createdAt FROM users WHERE id != $1 ORDER BY createdAt DESC`
+	err := r.DB.Select(&users, query, excludeUserId)
+	return users, err
+}
