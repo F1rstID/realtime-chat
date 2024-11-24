@@ -78,9 +78,10 @@ func main() {
 	// 미들웨어 설정
 	app.Use(recover.New())
 	app.Use(cors.New(cors.Config{
-		AllowOrigins: "*",
-		AllowHeaders: "Origin, Content-Type, Accept, Authorization",
-		AllowMethods: "GET, POST, PUT, DELETE",
+		AllowOrigins:  "*",
+		AllowHeaders:  "*",
+		AllowMethods:  "*",
+		ExposeHeaders: "*",
 	}))
 	app.Use(middlewares.RequestLogger())
 
