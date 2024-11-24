@@ -1,2 +1,3 @@
 [37m2024-11-24 01:26:17 [ERROR][31m request_logger.go:33: Method: POST, Path: /api/chats/private/1, Error: Cannot POST /api/chats/private/1[0m
 [37m2024-11-24 01:26:17 [ERROR][31m error_handler.go:17: Request failed - Method: POST, Path: /api/chats/private/1, Error: Cannot POST /api/chats/private/1[0m
+[37m2024-11-24 22:04:56 [ERROR][31m chat_usecase.go:52: Failed to get last messages: failed to get last messages: missing destination name rn in *[]models.Message[0m

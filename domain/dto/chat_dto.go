@@ -1,4 +1,3 @@
-// domain/dto/chat_dto.go
 package dto
 
 import (
@@ -6,11 +5,23 @@ import (
 	"time"
 )
 
+type UserInfo struct {
+	ID       int    `json:"id"`
+	Nickname string `json:"nickname"`
+}
+
 type ChatResponse struct {
+	ID        int       `json:"id"`
+	Name      string    `json:"name"`
+	CreatedAt time.Time `json:"createdAt"`
+}
+
+type ChatListResponse struct {
 	ID          int              `json:"id"`
 	Name        string           `json:"name"`
 	CreatedAt   time.Time        `json:"createdAt"`
 	LastMessage *LastMessageInfo `json:"lastMessage,omitempty"`
+	Users       []UserInfo       `json:"users"`
 }
 
 type LastMessageInfo struct {
@@ -20,30 +31,46 @@ type LastMessageInfo struct {
 	CreatedAt      time.Time `json:"createdAt"`
 }
 
-func NewChatResponse(chat *models.Chat, lastMessage *models.Message) *ChatResponse {
-	response := &ChatResponse{
+func NewChatResponse(chat *models.Chat) *ChatResponse {
+	return &ChatResponse{
 		ID:        chat.ID,
 		Name:      chat.Name,
 		CreatedAt: chat.CreatedAt,
 	}
-
-	if lastMessage != nil {
-		response.LastMessage = &LastMessageInfo{
-			Content:        lastMessage.Content,
-			SenderID:       lastMessage.SenderId,
-			SenderNickname: lastMessage.SenderNickname,
-			CreatedAt:      lastMessage.CreatedAt,
-		}
-	}
-
-	return response
 }
 
-func NewChatListResponse(chats []models.Chat, lastMessages map[int]*models.Message) []ChatResponse {
-	responses := make([]ChatResponse, len(chats))
+func NewChatListResponse(chats []models.Chat, lastMessages map[int]*models.Message, usersMap map[int][]models.User) []ChatListResponse {
+	responses := make([]ChatListResponse, len(chats))
 	for i, chat := range chats {
-		lastMessage := lastMessages[chat.ID]
-		responses[i] = *NewChatResponse(&chat, lastMessage)
+		response := ChatListResponse{
+			ID:        chat.ID,
+			Name:      chat.Name,
+			CreatedAt: chat.CreatedAt,
+			Users:     make([]UserInfo, 0),
+		}
+
+		// Add users if available
+		if users, ok := usersMap[chat.ID]; ok {
+			response.Users = make([]UserInfo, len(users))
+			for j, user := range users {
+				response.Users[j] = UserInfo{
+					ID:       user.ID,
+					Nickname: user.Nickname,
+				}
+			}
+		}
+
+		// Add last message if available
+		if lastMessage, ok := lastMessages[chat.ID]; ok {
+			response.LastMessage = &LastMessageInfo{
+				Content:        lastMessage.Content,
+				SenderID:       lastMessage.SenderId,
+				SenderNickname: lastMessage.SenderNickname,
+				CreatedAt:      lastMessage.CreatedAt,
+			}
+		}
+
+		responses[i] = response
 	}
 	return responses
 }

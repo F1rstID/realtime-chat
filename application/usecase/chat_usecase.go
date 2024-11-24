@@ -5,7 +5,7 @@ import (
 	"github.com/f1rstid/realtime-chat/domain/dto"
 	"github.com/f1rstid/realtime-chat/domain/models"
 	"github.com/f1rstid/realtime-chat/domain/repositories"
-	"log"
+	"github.com/f1rstid/realtime-chat/infrastructure/logger"
 )
 
 type ChatUsecase struct {
@@ -26,8 +26,8 @@ func NewChatUsecase(
 	}
 }
 
-// GetUserChats returns all chats for a user with their last messages
-func (cu *ChatUsecase) GetUserChats(userID int) ([]dto.ChatResponse, error) {
+// GetUserChats returns all chats for a user with their last messages and users
+func (cu *ChatUsecase) GetUserChats(userID int) ([]dto.ChatListResponse, error) {
 	// Verify user exists
 	_, err := cu.userRepo.FindByID(userID)
 	if err != nil {
@@ -49,15 +49,26 @@ func (cu *ChatUsecase) GetUserChats(userID int) ([]dto.ChatResponse, error) {
 	// Get last messages for all chats
 	lastMessages, err := cu.chatRepo.GetLastMessages(chatIDs)
 	if err != nil {
-		log.Println("Failed to get last messages:", err)
+		logger.Error("Failed to get last messages: %v", err)
 		return nil, err
 	}
 
+	// Get users for all chats
+	usersMap := make(map[int][]models.User)
+	for _, chatID := range chatIDs {
+		users, err := cu.chatRepo.GetChatUsers(chatID)
+		if err != nil {
+			logger.Error("Failed to get chat users for chatID %d: %v", chatID, err)
+			continue
+		}
+		usersMap[chatID] = users
+	}
+
 	// Create response
-	return dto.NewChatListResponse(chats, lastMessages), nil
+	return dto.NewChatListResponse(chats, lastMessages, usersMap), nil
 }
 
-func (cu *ChatUsecase) CreatePrivateChat(user1ID, user2ID int) (*models.Chat, error) {
+func (cu *ChatUsecase) CreatePrivateChat(user1ID, user2ID int) (*dto.ChatResponse, error) {
 	// Verify both users exist
 	user1, err := cu.userRepo.FindByID(user1ID)
 	if err != nil {
@@ -86,15 +97,16 @@ func (cu *ChatUsecase) CreatePrivateChat(user1ID, user2ID int) (*models.Chat, er
 		cu.chatRepo.Delete(chat.ID)
 		return nil, errors.New("failed to add user2 to chat")
 	}
-	return chat, nil
+
+	return dto.NewChatResponse(chat), nil
 }
 
-func (cu *ChatUsecase) CreateGroupChat(name string, userIDs []int) (*models.Chat, error) {
+func (cu *ChatUsecase) CreateGroupChat(name string, userIDs []int) (*dto.ChatResponse, error) {
 	// Verify all users exist
 	for _, userID := range userIDs {
 		_, err := cu.userRepo.FindByID(userID)
 		if err != nil {
-			return nil, errors.New("user not found: " + string(userID))
+			return nil, errors.New("user not found: " + string(rune(userID)))
 		}
 	}
 
@@ -114,5 +126,5 @@ func (cu *ChatUsecase) CreateGroupChat(name string, userIDs []int) (*models.Chat
 		}
 	}
 
-	return chat, nil
+	return dto.NewChatResponse(chat), nil
 }

@@ -135,7 +135,7 @@ const docTemplate = `{
                         "Bearer": []
                     }
                 ],
-                "description": "현재 로그인한 사용자가 참여중인 모든 채팅방 목록을 조회합니다. 각 채팅방의 마지막 메시지 정보도 함께 제공됩니다.",
+                "description": "현재 로그인한 사용자가 참여중인 모든 채팅방 목록을 조회합니다. 각 채팅방의 마지막 메시지 정보와 참여자 정보도 함께 제공됩니다.",
                 "consumes": [
                     "application/json"
                 ],
@@ -524,12 +524,35 @@ const docTemplate = `{
                     "type": "integer",
                     "example": 1
                 },
+                "name": {
+                    "type": "string",
+                    "example": "개발팀 채팅방"
+                }
+            }
+        },
+        "common.ChatListData": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string",
+                    "example": "2024-03-23T12:00:00Z"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
                 "lastMessage": {
                     "$ref": "#/definitions/common.LastMessage"
                 },
                 "name": {
                     "type": "string",
                     "example": "개발팀 채팅방"
+                },
+                "users": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/common.UserInfo"
+                    }
                 }
             }
         },
@@ -543,7 +566,7 @@ const docTemplate = `{
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/common.ChatData"
+                        "$ref": "#/definitions/common.ChatListData"
                     }
                 },
                 "success": {
@@ -860,6 +883,19 @@ const docTemplate = `{
                     "type": "string",
                     "example": "user@example.com"
                 },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "nickname": {
+                    "type": "string",
+                    "example": "홍길동"
+                }
+            }
+        },
+        "common.UserInfo": {
+            "type": "object",
+            "properties": {
                 "id": {
                     "type": "integer",
                     "example": 1

@@ -1,4 +1,3 @@
-// common/response.go
 package common
 
 // Response codes
@@ -31,17 +30,11 @@ type BaseResponse struct {
 	Data    interface{} `json:"data"`
 }
 
-// ErrorResponse 에러 응답 예시용 구조체
+// ErrorResponse 에러 응답 구조체
 type ErrorResponse struct {
 	Success bool   `json:"success" example:"false"`
 	Code    int    `json:"code" example:"4000"`
 	Data    string `json:"data" example:"잘못된 요청입니다"`
-}
-
-// AuthData represents authentication data
-type AuthData struct {
-	Token string   `json:"token" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."`
-	User  UserData `json:"user"`
 }
 
 // UserData represents user information
@@ -52,19 +45,40 @@ type UserData struct {
 	CreatedAt string `json:"createdAt" example:"2024-03-23T12:00:00Z"`
 }
 
+// AuthData represents authentication data
+type AuthData struct {
+	Token string   `json:"token" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."`
+	User  UserData `json:"user"`
+}
+
+// UserInfo in chat room
+type UserInfo struct {
+	ID       int    `json:"id" example:"1"`
+	Nickname string `json:"nickname" example:"홍길동"`
+}
+
+// LastMessage represents last message in chat
 type LastMessage struct {
+	Content        string `json:"content" example:"안녕하세요"`
 	SenderID       int    `json:"senderId" example:"1"`
 	SenderNickname string `json:"senderNickname" example:"홍길동"`
-	Content        string `json:"content" example:"안녕하세요"`
 	CreatedAt      string `json:"createdAt" example:"2024-03-23T12:00:00Z"`
 }
 
-// ChatData represents chat information
+// ChatData represents basic chat information (for creation/update)
 type ChatData struct {
+	ID        int    `json:"id" example:"1"`
+	Name      string `json:"name" example:"개발팀 채팅방"`
+	CreatedAt string `json:"createdAt" example:"2024-03-23T12:00:00Z"`
+}
+
+// ChatListData represents chat information with users (for list view)
+type ChatListData struct {
 	ID          int          `json:"id" example:"1"`
 	Name        string       `json:"name" example:"개발팀 채팅방"`
 	CreatedAt   string       `json:"createdAt" example:"2024-03-23T12:00:00Z"`
 	LastMessage *LastMessage `json:"lastMessage,omitempty"`
+	Users       []UserInfo   `json:"users"`
 }
 
 // MessageData represents message information
@@ -78,8 +92,7 @@ type MessageData struct {
 	UpdatedAt      string `json:"updatedAt" example:"2024-03-23T12:00:00Z"`
 }
 
-// Predefined responses
-
+// Predefined errors
 var (
 	// ErrInvalidRequest 잘못된 요청
 	InvalidRequest = ErrorResponse{
@@ -152,6 +165,7 @@ var (
 	}
 )
 
+// Swagger examples
 type ErrInvalidRequest struct {
 	Success bool   `json:"success" example:"false"`
 	Code    int    `json:"code" example:"4000"`
@@ -212,7 +226,7 @@ type ErrDatabase struct {
 	Data    string `json:"data" example:"데이터베이스 오류가 발생했습니다"`
 }
 
-// Success response example
+// Success response examples
 type RegisterResponse struct {
 	Success bool     `json:"success" example:"true"`
 	Code    int      `json:"code" example:"2001"`
@@ -229,6 +243,12 @@ type ChatResponse struct {
 	Success bool     `json:"success" example:"true"`
 	Code    int      `json:"code" example:"2000"`
 	Data    ChatData `json:"data"`
+}
+
+type ChatListResponse struct {
+	Success bool           `json:"success" example:"true"`
+	Code    int            `json:"code" example:"2000"`
+	Data    []ChatListData `json:"data"`
 }
 
 type MessageResponse struct {
@@ -251,13 +271,11 @@ type MessageListResponse struct {
 	Data    MessageListData `json:"data"`
 }
 
-type ChatListResponse struct {
-	Success bool       `json:"success" example:"true"`
-	Code    int        `json:"code" example:"2000"`
-	Data    []ChatData `json:"data"`
-}
-
 type CreateChatRequest struct {
 	Name    string `json:"name" example:"Team Chat" validate:"required"`
 	UserIDs []int  `json:"user_ids" example:"[1,2,3]" validate:"required"`
+}
+
+type CreatePrivateChatRequest struct {
+	TargetId int `json:"targetId" example:"1"`
 }

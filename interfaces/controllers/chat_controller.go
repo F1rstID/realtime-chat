@@ -1,4 +1,3 @@
-// interfaces/controllers/chat_controller.go
 package controllers
 
 import (
@@ -11,7 +10,6 @@ type CreatePrivateChatRequest struct {
 	TargetId int `json:"targetId" example:"1"`
 }
 
-// CreateGroupChatRequest represents the request for creating a group chat
 type CreateGroupChatRequest struct {
 	Name    string `json:"name" example:"Team Chat" validate:"required"`
 	UserIDs []int  `json:"userIds" example:"[1,2,3]" validate:"required"`
@@ -34,7 +32,7 @@ func NewChatController(
 
 // GetUserChats godoc
 // @Summary      사용자의 채팅방 목록 조회
-// @Description  현재 로그인한 사용자가 참여중인 모든 채팅방 목록을 조회합니다. 각 채팅방의 마지막 메시지 정보도 함께 제공됩니다.
+// @Description  현재 로그인한 사용자가 참여중인 모든 채팅방 목록을 조회합니다. 각 채팅방의 마지막 메시지 정보와 참여자 정보도 함께 제공됩니다.
 // @Tags         Chat
 // @Accept       json
 // @Produce      json

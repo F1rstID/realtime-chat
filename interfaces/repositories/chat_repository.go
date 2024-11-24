@@ -60,29 +60,29 @@ func (r *ChatRepository) RemoveUserFromChat(chatID, userID int) error {
 func (r *ChatRepository) GetChatUsers(chatID int) ([]models.User, error) {
 	var users []models.User
 	query := `
-		SELECT u.* 
-		FROM users u
-		JOIN chat_groups cg ON u.id = cg.userId
-		WHERE cg.chatId = $1
-	`
+        SELECT u.* 
+        FROM users u
+        JOIN chat_groups cg ON u.id = cg.userId
+        WHERE cg.chatId = $1
+        ORDER BY u.nickname
+    `
 	err := r.DB.Select(&users, query, chatID)
-
 	return users, err
 }
 
 func (r *ChatRepository) GetUserChats(userID int) ([]models.Chat, error) {
 	var chats []models.Chat
 	query := `
-		SELECT c.id, c.name, c.createdAt 
-		FROM chats c
-		JOIN chat_groups cg ON c.id = cg.chatId
-		WHERE cg.userId = $1
-	`
+        SELECT c.* 
+        FROM chats c
+        JOIN chat_groups cg ON c.id = cg.chatId
+        WHERE cg.userId = $1
+        ORDER BY c.createdAt DESC
+    `
 	err := r.DB.Select(&chats, query, userID)
 	return chats, err
 }
 
-// GetLastMessages retrieves the last message for each chat
 func (r *ChatRepository) GetLastMessages(chatIDs []int) (map[int]*models.Message, error) {
 	if len(chatIDs) == 0 {
 		return make(map[int]*models.Message), nil
@@ -97,22 +97,16 @@ func (r *ChatRepository) GetLastMessages(chatIDs []int) (map[int]*models.Message
 	}
 
 	query := fmt.Sprintf(`
-        WITH RankedMessages AS (
-            SELECT m.id,
-                   m.chatId,
-                   m.senderId,
-                   m.content,
-                   m.createdAt,
-                   m.updatedAt,
-                   u.nickname as senderNickname,
-                   ROW_NUMBER() OVER (PARTITION BY m.chatId ORDER BY m.createdAt DESC) as rn
-            FROM messages m
-            JOIN users u ON m.senderId = u.id
-            WHERE m.chatId IN (%s)
-        )
-        SELECT id, chatId, senderId, content, createdAt, updatedAt, senderNickname 
-        FROM RankedMessages 
-        WHERE rn = 1
+        SELECT m.*, u.nickname as senderNickname
+        FROM messages m
+        JOIN users u ON m.senderId = u.id
+        JOIN (
+            SELECT chatId, MAX(createdAt) as maxCreatedAt
+            FROM messages
+            WHERE chatId IN (%s)
+            GROUP BY chatId
+        ) latest ON m.chatId = latest.chatId AND m.createdAt = latest.maxCreatedAt
+        ORDER BY m.createdAt DESC
     `, strings.Join(placeholders, ","))
 
 	var messages []models.Message
