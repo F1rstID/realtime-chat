@@ -103,3 +103,14 @@ func (cc *ChatController) CreateGroupChat(c *fiber.Ctx) error {
 
 	return interfaces.SendCreated(c, chat)
 }
+
+func (cc *ChatController) GetChats(c *fiber.Ctx) error {
+	userID := c.Locals("userId").(int)
+
+	chats, err := cc.chatUseCase.GetUserChats(userID)
+	if err != nil {
+		return interfaces.SendInternalError(c)
+	}
+
+	return interfaces.SendSuccess(c, chats)
+}

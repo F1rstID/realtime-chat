@@ -88,6 +88,6 @@ func (cu *ChatUsecase) CreateGroupChat(name string, userIDs []int) (*models.Chat
 
 // GetUserChats returns all chats for a user
 func (cu *ChatUsecase) GetUserChats(userID int) ([]models.Chat, error) {
-	// Implementation here
+	
 	return nil, nil
 }

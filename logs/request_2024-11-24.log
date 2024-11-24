@@ -202,3 +202,4 @@
 [37m2024-11-24 16:05:22 [REQUEST][34m request_logger.go:22: Method: POST, Path: /api/messages, IP: 127.0.0.1, Status: 201, Duration: 12.872916ms[0m
 [37m2024-11-24 16:06:00 [REQUEST][34m request_logger.go:22: Method: PUT, Path: /api/messages/2, IP: 127.0.0.1, Status: 200, Duration: 5.487917ms[0m
 [37m2024-11-24 16:06:45 [REQUEST][34m request_logger.go:22: Method: DELETE, Path: /api/messages/4, IP: 127.0.0.1, Status: 200, Duration: 8.509708ms[0m
+[37m2024-11-24 18:42:45 [REQUEST][34m request_logger.go:22: Method: POST, Path: /api/auth/login, IP: 192.168.219.101, Status: 200, Duration: 16.06875ms[0m
