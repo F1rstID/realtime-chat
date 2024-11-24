@@ -42,7 +42,7 @@ func (r *MessageRepository) Create(message *models.Message) error {
 func (r *MessageRepository) FindById(id int) (*models.Message, error) {
 	message := models.Message{}
 	query := `
-		SELECT m.*, u.nickname as sender_nickname, m.id as message_id
+		SELECT m.*, u.nickname as senderNickname, m.id as messageId
 		FROM messages m
 		JOIN users u ON m.senderId = u.id
 		WHERE m.id = $1

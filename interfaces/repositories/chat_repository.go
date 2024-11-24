@@ -50,7 +50,7 @@ func (r *ChatRepository) AddUserToChat(chatID, userID int) error {
 }
 
 func (r *ChatRepository) RemoveUserFromChat(chatID, userID int) error {
-	query := `DELETE FROM chat_groups WHERE chatId = $1 AND userId = $2`
+	query := `DELETE FROM chatGroups WHERE chatId = $1 AND userId = $2`
 	_, err := r.DB.Exec(query, chatID, userID)
 	return err
 }
@@ -60,7 +60,7 @@ func (r *ChatRepository) GetChatUsers(chatID int) ([]models.User, error) {
 	query := `
 		SELECT u.* 
 		FROM users u
-		JOIN chat_groups cg ON u.id = cg.userId
+		JOIN chatGroups cg ON u.id = cg.userId
 		WHERE cg.chatId = $1
 	`
 	err := r.DB.Select(&users, query, chatID)
@@ -72,7 +72,7 @@ func (r *ChatRepository) GetUserChats(userID int) ([]models.Chat, error) {
 	query := `
 		SELECT c.* 
 		FROM chats c
-		JOIN chat_groups cg ON c.id = cg.chatId
+		JOIN chatGroups cg ON c.id = cg.chatId
 		WHERE cg.userId = $1
 	`
 	err := r.DB.Select(&chats, query, userID)

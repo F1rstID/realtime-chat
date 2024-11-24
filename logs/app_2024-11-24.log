@@ -64,3 +64,11 @@
 [37m2024-11-24 14:42:25 [INFO][32m main.go:87: Server is starting on port 5050[0m
 [37m2024-11-24 14:42:25 [INFO][32m main.go:88: Swagger documentation is available at http://localhost:5050/swagger/[0m
 [37m2024-11-24 14:42:35 [INFO][32m main.go:99: Shutting down server...[0m
+[37m2024-11-24 15:46:28 [INFO][32m main.go:84: Server is starting on port 5050[0m
+[37m2024-11-24 15:46:28 [INFO][32m main.go:85: Swagger documentation is available at http://localhost:5050/swagger/[0m
+[37m2024-11-24 15:46:32 [INFO][32m websocket_controller.go:63: New WebSocket connection - UserID: 2, ChatID: 1[0m
+[37m2024-11-24 15:53:29 [INFO][32m main.go:96: Shutting down server...[0m
+[37m2024-11-24 15:53:39 [INFO][32m main.go:100: Server is starting on port 5050[0m
+[37m2024-11-24 15:53:39 [INFO][32m main.go:101: Swagger documentation is available at http://localhost:5050/swagger/[0m
+[37m2024-11-24 15:53:56 [INFO][32m websocket_controller.go:63: New WebSocket connection - UserID: 2, ChatID: 1[0m
+[37m2024-11-24 15:56:12 [INFO][32m main.go:112: Shutting down server...[0m
