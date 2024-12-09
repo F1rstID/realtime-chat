@@ -11,3 +11,11 @@
 [37m2024-12-09 22:22:22 [REQUEST][34m request_logger.go:22: Method: GET, Path: swagger-ui-standalone-preset.js, IP: 127.0.0.1, Status: 200, Duration: 42.334µs[0m
 [37m2024-12-09 22:22:22 [REQUEST][34m request_logger.go:22: Method: GET, Path: doc.json, IP: 127.0.0.1, Status: 200, Duration: 836.167µs[0m
 [37m2024-12-09 22:22:22 [REQUEST][34m request_logger.go:22: Method: GET, Path: favicon-32x32.png, IP: 127.0.0.1, Status: 200, Duration: 32.375µs[0m
+[37m2024-12-09 22:40:18 [REQUEST][34m request_logger.go:22: Method: GET, Path: index.html, IP: 127.0.0.1, Status: 200, Duration: 2.702125ms[0m
+[37m2024-12-09 22:40:18 [REQUEST][34m request_logger.go:22: Method: GET, Path: swagger-ui.css, IP: 127.0.0.1, Status: 200, Duration: 29.834µs[0m
+[37m2024-12-09 22:40:18 [REQUEST][34m request_logger.go:22: Method: GET, Path: swagger-ui-bundle.js, IP: 127.0.0.1, Status: 200, Duration: 1.306042ms[0m
+[37m2024-12-09 22:40:18 [REQUEST][34m request_logger.go:22: Method: GET, Path: swagger-ui-standalone-preset.js, IP: 127.0.0.1, Status: 200, Duration: 3.01125ms[0m
+[37m2024-12-09 22:40:18 [REQUEST][34m request_logger.go:22: Method: GET, Path: doc.json, IP: 127.0.0.1, Status: 200, Duration: 1.461ms[0m
+[37m2024-12-09 22:40:18 [REQUEST][34m request_logger.go:22: Method: GET, Path: favicon-32x32.png, IP: 127.0.0.1, Status: 200, Duration: 23.792µs[0m
+[37m2024-12-09 22:40:51 [REQUEST][34m request_logger.go:22: Method: POST, Path: /api/auth/login, IP: 127.0.0.1, Status: 200, Duration: 8.640333ms[0m
+[37m2024-12-09 22:41:06 [REQUEST][34m request_logger.go:22: Method: GET, Path: /api/chats, IP: 127.0.0.1, Status: 200, Duration: 16.966ms[0m

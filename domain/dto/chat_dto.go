@@ -5,50 +5,36 @@ import (
 	"time"
 )
 
-// LastMessageInfo represents the last message in a chat
-type LastMessageInfo struct {
-	MessageID      int       `json:"messageId"` // Added MessageID field
-	Content        string    `json:"content"`
-	SenderID       int       `json:"senderId"`
-	SenderNickname string    `json:"senderNickname"`
-	CreatedAt      time.Time `json:"createdAt"`
-}
-
-func NewLastMessageInfo(message *models.Message) *LastMessageInfo {
-	if message == nil {
-		return nil
-	}
-	return &LastMessageInfo{
-		MessageID:      message.ID,
-		Content:        message.Content,
-		SenderID:       message.SenderId,
-		SenderNickname: message.SenderNickname,
-		CreatedAt:      message.CreatedAt,
-	}
-}
-
 type UserInfo struct {
-	ID       int    `json:"id"`
+	UserID   int    `json:"userId"` // Changed from id to userId for consistency
 	Nickname string `json:"nickname"`
 }
 
 type ChatResponse struct {
-	ID        int       `json:"id"`
+	ChatID    int       `json:"chatId"` // Changed from id to chatId
 	Name      string    `json:"name"`
 	CreatedAt time.Time `json:"createdAt"`
 }
 
 type ChatListResponse struct {
-	ID          int              `json:"id"`
+	ChatID      int              `json:"chatId"` // Changed from id to chatId
 	Name        string           `json:"name"`
 	CreatedAt   time.Time        `json:"createdAt"`
 	LastMessage *LastMessageInfo `json:"lastMessage,omitempty"`
 	Users       []UserInfo       `json:"users"`
 }
 
+type LastMessageInfo struct {
+	MessageID      int       `json:"messageId"`
+	Content        string    `json:"content"`
+	SenderID       int       `json:"senderId"`
+	SenderNickname string    `json:"senderNickname"`
+	CreatedAt      time.Time `json:"createdAt"`
+}
+
 func NewChatResponse(chat *models.Chat) *ChatResponse {
 	return &ChatResponse{
-		ID:        chat.ID,
+		ChatID:    chat.ID,
 		Name:      chat.Name,
 		CreatedAt: chat.CreatedAt,
 	}
@@ -58,7 +44,7 @@ func NewChatListResponse(chats []models.Chat, lastMessages map[int]*models.Messa
 	responses := make([]ChatListResponse, len(chats))
 	for i, chat := range chats {
 		response := ChatListResponse{
-			ID:        chat.ID,
+			ChatID:    chat.ID,
 			Name:      chat.Name,
 			CreatedAt: chat.CreatedAt,
 			Users:     make([]UserInfo, 0),
@@ -69,7 +55,7 @@ func NewChatListResponse(chats []models.Chat, lastMessages map[int]*models.Messa
 			response.Users = make([]UserInfo, len(users))
 			for j, user := range users {
 				response.Users[j] = UserInfo{
-					ID:       user.ID,
+					UserID:   user.ID,
 					Nickname: user.Nickname,
 				}
 			}
@@ -78,6 +64,7 @@ func NewChatListResponse(chats []models.Chat, lastMessages map[int]*models.Messa
 		// Add last message if available
 		if lastMessage, ok := lastMessages[chat.ID]; ok {
 			response.LastMessage = &LastMessageInfo{
+				MessageID:      lastMessage.ID,
 				Content:        lastMessage.Content,
 				SenderID:       lastMessage.SenderId,
 				SenderNickname: lastMessage.SenderNickname,

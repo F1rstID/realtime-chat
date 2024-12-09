@@ -57,16 +57,16 @@ type UserInfo struct {
 	Nickname string `json:"nickname" example:"홍길동"`
 }
 
-// ChatData represents basic chat information (for creation/update)
+// ChatData represents basic chat information
 type ChatData struct {
-	ID        int    `json:"id" example:"1"`
+	ChatID    int    `json:"chatId" example:"1"` // Changed from id to chatId
 	Name      string `json:"name" example:"개발팀 채팅방"`
 	CreatedAt string `json:"createdAt" example:"2024-03-23T12:00:00Z"`
 }
 
-// ChatListData represents chat information with users (for list view)
+// ChatListData represents chat information with users
 type ChatListData struct {
-	ID          int          `json:"id" example:"1"`
+	ChatID      int          `json:"chatId" example:"1"` // Changed from id to chatId
 	Name        string       `json:"name" example:"개발팀 채팅방"`
 	CreatedAt   string       `json:"createdAt" example:"2024-03-23T12:00:00Z"`
 	LastMessage *LastMessage `json:"lastMessage,omitempty"`

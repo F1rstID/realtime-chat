@@ -556,13 +556,14 @@ const docTemplate = `{
         "common.ChatData": {
             "type": "object",
             "properties": {
+                "chatId": {
+                    "description": "Changed from id to chatId",
+                    "type": "integer",
+                    "example": 1
+                },
                 "createdAt": {
                     "type": "string",
                     "example": "2024-03-23T12:00:00Z"
-                },
-                "id": {
-                    "type": "integer",
-                    "example": 1
                 },
                 "name": {
                     "type": "string",
@@ -573,13 +574,14 @@ const docTemplate = `{
         "common.ChatListData": {
             "type": "object",
             "properties": {
+                "chatId": {
+                    "description": "Changed from id to chatId",
+                    "type": "integer",
+                    "example": 1
+                },
                 "createdAt": {
                     "type": "string",
                     "example": "2024-03-23T12:00:00Z"
-                },
-                "id": {
-                    "type": "integer",
-                    "example": 1
                 },
                 "lastMessage": {
                     "$ref": "#/definitions/common.LastMessage"
