@@ -1,5 +1,3 @@
-// domain/events/websocket_events.go
-
 package events
 
 import (
@@ -20,14 +18,6 @@ const (
 	StatusCreated = 2001
 )
 
-// WebSocketResponse represents the unified response structure for both REST and WebSocket
-type WebSocketResponse struct {
-	Success   bool        `json:"success"`
-	Code      int         `json:"code"`
-	Data      interface{} `json:"data"`
-	Timestamp time.Time   `json:"timestamp"`
-}
-
 // MessageEventData represents the data structure for message events
 type MessageEventData struct {
 	Type           string    `json:"type"`
@@ -38,6 +28,14 @@ type MessageEventData struct {
 	Content        string    `json:"content,omitempty"`
 	CreatedAt      time.Time `json:"createdAt,omitempty"`
 	UpdatedAt      time.Time `json:"updatedAt,omitempty"`
+}
+
+// WebSocketResponse represents the unified response structure
+type WebSocketResponse struct {
+	Success   bool        `json:"success"`
+	Code      int         `json:"code"`
+	Data      interface{} `json:"data"`
+	Timestamp time.Time   `json:"timestamp"`
 }
 
 // NewWebSocketEvent creates a new WebSocket event with unified response format

@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"errors"
+	"fmt"
 	"github.com/f1rstid/realtime-chat/domain/dto"
 	"github.com/f1rstid/realtime-chat/domain/models"
 	"github.com/f1rstid/realtime-chat/domain/repositories"
@@ -102,11 +103,33 @@ func (cu *ChatUsecase) CreatePrivateChat(user1ID, user2ID int) (*dto.ChatRespons
 }
 
 func (cu *ChatUsecase) CreateGroupChat(name string, userIDs []int) (*dto.ChatResponse, error) {
-	// Verify all users exist
+	// Check for empty name
+	if name == "" {
+		return nil, errors.New("chat name is required")
+	}
+
+	// Make sure we have at least one other user
+	if len(userIDs) < 1 {
+		return nil, errors.New("at least one other user is required")
+	}
+
+	// Create a map for O(1) lookup to check for duplicates
+	userIDMap := make(map[int]bool)
+	uniqueUserIDs := []int{}
+
+	// Add all users to the map, excluding duplicates
 	for _, userID := range userIDs {
+		if !userIDMap[userID] {
+			userIDMap[userID] = true
+			uniqueUserIDs = append(uniqueUserIDs, userID)
+		}
+	}
+
+	// Verify all users exist
+	for _, userID := range uniqueUserIDs {
 		_, err := cu.userRepo.FindByID(userID)
 		if err != nil {
-			return nil, errors.New("user not found: " + string(rune(userID)))
+			return nil, fmt.Errorf("user not found: %d", userID)
 		}
 	}
 
@@ -118,8 +141,8 @@ func (cu *ChatUsecase) CreateGroupChat(name string, userIDs []int) (*dto.ChatRes
 		return nil, err
 	}
 
-	// Add users to the chat group
-	for _, userID := range userIDs {
+	// Add all unique users to the chat group
+	for _, userID := range uniqueUserIDs {
 		if err := cu.chatRepo.AddUserToChat(chat.ID, userID); err != nil {
 			cu.chatRepo.Delete(chat.ID)
 			return nil, errors.New("failed to add user to chat group")

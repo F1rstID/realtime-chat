@@ -110,8 +110,24 @@ func (cc *ChatController) CreateGroupChat(c *fiber.Ctx) error {
 		return interfaces.SendBadRequest(c, "채팅방 이름은 필수 항목입니다")
 	}
 
-	if len(req.UserIDs) < 2 {
-		return interfaces.SendBadRequest(c, "그룹 채팅은 최소 2명 이상의 사용자가 필요합니다")
+	if len(req.UserIDs) < 1 {
+		return interfaces.SendBadRequest(c, "초대할 사용자가 한 명 이상 필요합니다")
+	}
+
+	// Get current user ID from context
+	currentUserID := c.Locals("userId").(int)
+
+	// Add current user to the userIDs if not already included
+	hasCurrentUser := false
+	for _, id := range req.UserIDs {
+		if id == currentUserID {
+			hasCurrentUser = true
+			break
+		}
+	}
+
+	if !hasCurrentUser {
+		req.UserIDs = append(req.UserIDs, currentUserID)
 	}
 
 	chat, err := cc.chatUseCase.CreateGroupChat(req.Name, req.UserIDs)
@@ -119,6 +135,10 @@ func (cc *ChatController) CreateGroupChat(c *fiber.Ctx) error {
 		switch err.Error() {
 		case "user not found":
 			return interfaces.SendNotFound(c, "사용자")
+		case "chat name is required":
+			return interfaces.SendBadRequest(c, "채팅방 이름은 필수 항목입니다")
+		case "at least one other user is required":
+			return interfaces.SendBadRequest(c, "초대할 사용자가 한 명 이상 필요합니다")
 		default:
 			return interfaces.SendInternalError(c)
 		}

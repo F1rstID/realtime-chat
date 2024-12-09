@@ -5,6 +5,28 @@ import (
 	"time"
 )
 
+// LastMessageInfo represents the last message in a chat
+type LastMessageInfo struct {
+	MessageID      int       `json:"messageId"` // Added MessageID field
+	Content        string    `json:"content"`
+	SenderID       int       `json:"senderId"`
+	SenderNickname string    `json:"senderNickname"`
+	CreatedAt      time.Time `json:"createdAt"`
+}
+
+func NewLastMessageInfo(message *models.Message) *LastMessageInfo {
+	if message == nil {
+		return nil
+	}
+	return &LastMessageInfo{
+		MessageID:      message.ID,
+		Content:        message.Content,
+		SenderID:       message.SenderId,
+		SenderNickname: message.SenderNickname,
+		CreatedAt:      message.CreatedAt,
+	}
+}
+
 type UserInfo struct {
 	ID       int    `json:"id"`
 	Nickname string `json:"nickname"`
@@ -22,13 +44,6 @@ type ChatListResponse struct {
 	CreatedAt   time.Time        `json:"createdAt"`
 	LastMessage *LastMessageInfo `json:"lastMessage,omitempty"`
 	Users       []UserInfo       `json:"users"`
-}
-
-type LastMessageInfo struct {
-	Content        string    `json:"content"`
-	SenderID       int       `json:"senderId"`
-	SenderNickname string    `json:"senderNickname"`
-	CreatedAt      time.Time `json:"createdAt"`
 }
 
 func NewChatResponse(chat *models.Chat) *ChatResponse {

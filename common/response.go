@@ -57,14 +57,6 @@ type UserInfo struct {
 	Nickname string `json:"nickname" example:"홍길동"`
 }
 
-// LastMessage represents last message in chat
-type LastMessage struct {
-	Content        string `json:"content" example:"안녕하세요"`
-	SenderID       int    `json:"senderId" example:"1"`
-	SenderNickname string `json:"senderNickname" example:"홍길동"`
-	CreatedAt      string `json:"createdAt" example:"2024-03-23T12:00:00Z"`
-}
-
 // ChatData represents basic chat information (for creation/update)
 type ChatData struct {
 	ID        int    `json:"id" example:"1"`
@@ -83,13 +75,22 @@ type ChatListData struct {
 
 // MessageData represents message information
 type MessageData struct {
-	ID             int    `json:"id" example:"1"`
+	MessageID      int    `json:"messageId" example:"1"` // Changed from id to messageId
 	ChatID         int    `json:"chatId" example:"1"`
 	SenderID       int    `json:"senderId" example:"1"`
 	SenderNickname string `json:"senderNickname" example:"홍길동"`
 	Content        string `json:"content" example:"안녕하세요"`
 	CreatedAt      string `json:"createdAt" example:"2024-03-23T12:00:00Z"`
 	UpdatedAt      string `json:"updatedAt" example:"2024-03-23T12:00:00Z"`
+}
+
+// LastMessage represents last message in chat
+type LastMessage struct {
+	MessageID      int    `json:"messageId" example:"1"` // Added messageId field
+	Content        string `json:"content" example:"안녕하세요"`
+	SenderID       int    `json:"senderId" example:"1"`
+	SenderNickname string `json:"senderNickname" example:"홍길동"`
+	CreatedAt      string `json:"createdAt" example:"2024-03-23T12:00:00Z"`
 }
 
 // Predefined errors

@@ -778,6 +778,11 @@ const docTemplate = `{
                     "type": "string",
                     "example": "2024-03-23T12:00:00Z"
                 },
+                "messageId": {
+                    "description": "Added messageId field",
+                    "type": "integer",
+                    "example": 1
+                },
                 "senderId": {
                     "type": "integer",
                     "example": 1
@@ -819,7 +824,8 @@ const docTemplate = `{
                     "type": "string",
                     "example": "2024-03-23T12:00:00Z"
                 },
-                "id": {
+                "messageId": {
+                    "description": "Changed from id to messageId",
                     "type": "integer",
                     "example": 1
                 },
