@@ -1,5 +1,4 @@
 // application/usecase/message_usecase.go
-
 package usecase
 
 import (
@@ -34,10 +33,17 @@ func NewMessageUsecase(
 
 // SendMessage sends a new message in a chat
 func (mu *MessageUsecase) SendMessage(chatID, senderID int, content string) (*dto.MessageResponse, error) {
-	// Verify chat exists
+	// Verify chat exists and get users
 	chat, err := mu.chatRepo.FindById(chatID)
 	if err != nil {
 		return nil, errors.New("chat not found")
+	}
+
+	// Get chat users before creating message
+	users, err := mu.chatRepo.GetChatUsers(chatID)
+	if err != nil {
+		logger.Error("Failed to get chat users: %v", err)
+		return nil, err
 	}
 
 	message := &models.Message{
@@ -53,7 +59,13 @@ func (mu *MessageUsecase) SendMessage(chatID, senderID int, content string) (*dt
 		return nil, err
 	}
 
-	// Create and broadcast WebSocket event with unified response format
+	// Extract user IDs
+	userIDs := make([]int, len(users))
+	for i, user := range users {
+		userIDs[i] = user.ID
+	}
+
+	// Create and broadcast WebSocket event
 	eventData := &events.MessageEventData{
 		MessageID:      message.ID,
 		ChatID:         message.ChatId,
@@ -66,7 +78,7 @@ func (mu *MessageUsecase) SendMessage(chatID, senderID int, content string) (*dt
 
 	event := events.NewWebSocketEvent(events.EventMessageCreated, chatID, eventData)
 	if eventJSON, err := event.ToJSON(); err == nil {
-		mu.wsHub.BroadcastToChat(chatID, eventJSON)
+		mu.wsHub.BroadcastToUsers(userIDs, eventJSON)
 	}
 
 	return dto.NewMessageResponse(message), nil
@@ -84,6 +96,13 @@ func (mu *MessageUsecase) UpdateMessage(messageID, userID int, newContent string
 		return nil, errors.New("unauthorized to update this message")
 	}
 
+	// Get chat users before updating message
+	users, err := mu.chatRepo.GetChatUsers(originalMessage.ChatId)
+	if err != nil {
+		logger.Error("Failed to get chat users: %v", err)
+		return nil, err
+	}
+
 	// Update message
 	updatedMessage := &models.Message{
 		ID:        originalMessage.ID,
@@ -98,7 +117,13 @@ func (mu *MessageUsecase) UpdateMessage(messageID, userID int, newContent string
 		return nil, err
 	}
 
-	// Create and broadcast WebSocket event with unified response format
+	// Extract user IDs
+	userIDs := make([]int, len(users))
+	for i, user := range users {
+		userIDs[i] = user.ID
+	}
+
+	// Create and broadcast WebSocket event
 	eventData := &events.MessageEventData{
 		MessageID:      updatedMessage.ID,
 		ChatID:         updatedMessage.ChatId,
@@ -111,7 +136,7 @@ func (mu *MessageUsecase) UpdateMessage(messageID, userID int, newContent string
 
 	event := events.NewWebSocketEvent(events.EventMessageUpdated, updatedMessage.ChatId, eventData)
 	if eventJSON, err := event.ToJSON(); err == nil {
-		mu.wsHub.BroadcastToChat(updatedMessage.ChatId, eventJSON)
+		mu.wsHub.BroadcastToUsers(userIDs, eventJSON)
 	}
 
 	return dto.NewMessageResponse(updatedMessage), nil
@@ -128,11 +153,24 @@ func (mu *MessageUsecase) DeleteMessage(messageID, userID int) error {
 		return errors.New("unauthorized to delete this message")
 	}
 
+	// Get chat users before deleting message
+	users, err := mu.chatRepo.GetChatUsers(message.ChatId)
+	if err != nil {
+		logger.Error("Failed to get chat users: %v", err)
+		return err
+	}
+
 	if err := mu.messageRepo.Delete(messageID); err != nil {
 		return err
 	}
 
-	// Create and broadcast WebSocket event with unified response format
+	// Extract user IDs
+	userIDs := make([]int, len(users))
+	for i, user := range users {
+		userIDs[i] = user.ID
+	}
+
+	// Create and broadcast WebSocket event
 	eventData := &events.MessageEventData{
 		MessageID:      message.ID,
 		ChatID:         message.ChatId,
@@ -144,7 +182,7 @@ func (mu *MessageUsecase) DeleteMessage(messageID, userID int) error {
 
 	event := events.NewWebSocketEvent(events.EventMessageDeleted, message.ChatId, eventData)
 	if eventJSON, err := event.ToJSON(); err == nil {
-		mu.wsHub.BroadcastToChat(message.ChatId, eventJSON)
+		mu.wsHub.BroadcastToUsers(userIDs, eventJSON)
 	}
 
 	return nil

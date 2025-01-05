@@ -1,0 +1,4 @@
+[37m2025-01-05 21:11:33 [ERROR][31m request_logger.go:33: Method: GET, Path: /ws, Error: Cannot GET /ws[0m
+[37m2025-01-05 21:11:33 [ERROR][31m error_handler.go:17: Request failed - Method: GET, Path: /ws, Error: Cannot GET /ws[0m
+[37m2025-01-05 21:11:51 [ERROR][31m request_logger.go:33: Method: GET, Path: /ws, Error: Cannot GET /ws[0m
+[37m2025-01-05 21:11:51 [ERROR][31m error_handler.go:17: Request failed - Method: GET, Path: /ws, Error: Cannot GET /ws[0m

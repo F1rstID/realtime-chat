@@ -69,7 +69,9 @@ func SetRoutes(app *fiber.App, config *config.Config) {
 	users.Get("/", userController.GetAllUsers) // 새로운 라우트 추가
 
 	// WebSocket routes with authentication
+	//app.Use("/ws", middlewares.WebSocketAuthMiddleware(authService))
+	//app.Use("/ws/:chatId", wsController.HandleWebSocket)
+	//app.Get("/ws/:chatId", ws.New(wsController.WebSocket))
 	app.Use("/ws", middlewares.WebSocketAuthMiddleware(authService))
-	app.Use("/ws/:chatId", wsController.HandleWebSocket)
-	app.Get("/ws/:chatId", ws.New(wsController.WebSocket))
+	app.Get("/ws", ws.New(wsController.WebSocket))
 }

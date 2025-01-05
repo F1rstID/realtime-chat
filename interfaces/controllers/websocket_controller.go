@@ -2,8 +2,6 @@
 package controllers
 
 import (
-	"strconv"
-
 	"github.com/f1rstid/realtime-chat/infrastructure/logger"
 	"github.com/f1rstid/realtime-chat/infrastructure/websocket"
 	"github.com/gofiber/fiber/v2"
@@ -24,7 +22,6 @@ func NewWebSocketController(hub *websocket.Hub) *WebSocketController {
 func (wc *WebSocketController) HandleWebSocket(c *fiber.Ctx) error {
 	if ws.IsWebSocketUpgrade(c) {
 		c.Locals("allowed", true)
-		c.Locals("userId", c.Locals("userId"))
 		return c.Next()
 	}
 	return fiber.ErrUpgradeRequired
@@ -39,20 +36,6 @@ func (wc *WebSocketController) WebSocket(c *ws.Conn) {
 		return
 	}
 
-	// Get chat ID from URL parameter
-	chatIDStr := c.Params("chatId")
-	if chatIDStr == "" {
-		c.Close()
-		return
-	}
-
-	chatID, err := strconv.Atoi(chatIDStr)
-	if err != nil {
-		logger.Error("Invalid chatId format: %v", err)
-		c.Close()
-		return
-	}
-
 	userIDInt, ok := userID.(int)
 	if !ok {
 		logger.Error("Invalid userId type: %T", userID)
@@ -60,7 +43,7 @@ func (wc *WebSocketController) WebSocket(c *ws.Conn) {
 		return
 	}
 
-	logger.Info("New WebSocket connection - UserID: %d, ChatID: %d", userIDInt, chatID)
+	logger.Info("New WebSocket connection - UserID: %d", userIDInt)
 
 	// Create new client
 	client := &websocket.Client{
@@ -68,14 +51,13 @@ func (wc *WebSocketController) WebSocket(c *ws.Conn) {
 		Conn:   c,
 		Send:   make(chan []byte, 256),
 		UserID: userIDInt,
-		ChatID: chatID,
 	}
 
 	client.Hub.RegisterClient(client)
 
 	// Setup ping handler to maintain connection
 	c.SetCloseHandler(func(code int, text string) error {
-		logger.Info("WebSocket connection closed - UserID: %d, ChatID: %d", userIDInt, chatID)
+		logger.Info("WebSocket connection closed - UserID: %d", userIDInt)
 		return nil
 	})
 

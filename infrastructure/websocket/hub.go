@@ -2,19 +2,15 @@
 package websocket
 
 import (
-	"sync"
-
 	"github.com/f1rstid/realtime-chat/infrastructure/logger"
 	"github.com/gofiber/websocket/v2"
+	"sync"
 )
 
-// Hub maintains the set of active clients and broadcasts messages to the clients
+// Hub maintains the set of active clients and broadcasts messages
 type Hub struct {
-	// Registered clients by chat ID
+	// Registered clients mapped by user ID
 	clients map[int]map[*Client]bool
-
-	// Channel for broadcasting messages
-	broadcast chan []byte
 
 	// Register requests from the clients
 	register chan *Client
@@ -26,22 +22,20 @@ type Hub struct {
 	mu sync.RWMutex
 }
 
-// Client represents a connected WebSocket client
+// Client represents a connected websocket client
 type Client struct {
 	Hub    *Hub
 	Conn   *websocket.Conn
 	Send   chan []byte
 	UserID int
-	ChatID int
 }
 
 // NewHub creates a new Hub instance
 func NewHub() *Hub {
 	return &Hub{
-		broadcast:  make(chan []byte),
+		clients:    make(map[int]map[*Client]bool),
 		register:   make(chan *Client),
 		unregister: make(chan *Client),
-		clients:    make(map[int]map[*Client]bool),
 	}
 }
 
@@ -51,73 +45,60 @@ func (h *Hub) Run() {
 		select {
 		case client := <-h.register:
 			h.mu.Lock()
-			if _, ok := h.clients[client.ChatID]; !ok {
-				h.clients[client.ChatID] = make(map[*Client]bool)
+			if _, ok := h.clients[client.UserID]; !ok {
+				h.clients[client.UserID] = make(map[*Client]bool)
 			}
-			h.clients[client.ChatID][client] = true
+			h.clients[client.UserID][client] = true
 			h.mu.Unlock()
+			logger.Info("Client registered - UserID: %d", client.UserID)
 
 		case client := <-h.unregister:
 			h.mu.Lock()
-			if clients, ok := h.clients[client.ChatID]; ok {
+			if clients, ok := h.clients[client.UserID]; ok {
 				if _, ok := clients[client]; ok {
 					delete(clients, client)
 					close(client.Send)
 					if len(clients) == 0 {
-						delete(h.clients, client.ChatID)
+						delete(h.clients, client.UserID)
 					}
 				}
 			}
 			h.mu.Unlock()
-
-		case message := <-h.broadcast:
-			h.broadcastMessage(message)
+			logger.Info("Client unregistered - UserID: %d", client.UserID)
 		}
 	}
 }
 
-// broadcastMessage sends a message to all connected clients
-func (h *Hub) broadcastMessage(message []byte) {
+// BroadcastToUsers sends a message to specified users
+func (h *Hub) BroadcastToUsers(userIDs []int, message []byte) {
 	h.mu.RLock()
 	defer h.mu.RUnlock()
 
-	for _, clients := range h.clients {
-		for client := range clients {
-			select {
-			case client.Send <- message:
-			default:
-				close(client.Send)
-				h.mu.Lock()
-				delete(clients, client)
-				h.mu.Unlock()
+	for _, userID := range userIDs {
+		if clients, ok := h.clients[userID]; ok {
+			for client := range clients {
+				select {
+				case client.Send <- message:
+					logger.Info("Message sent to UserID: %d", userID)
+				default:
+					close(client.Send)
+					delete(clients, client)
+					if len(clients) == 0 {
+						delete(h.clients, userID)
+					}
+					logger.Error("Failed to send message to UserID: %d", userID)
+				}
 			}
 		}
 	}
 }
 
-// BroadcastToChat sends a message to all clients in a specific chat
-func (h *Hub) BroadcastToChat(chatID int, message []byte) {
-	h.mu.RLock()
-	defer h.mu.RUnlock()
-
-	if clients, ok := h.clients[chatID]; ok {
-		for client := range clients {
-			select {
-			case client.Send <- message:
-			default:
-				close(client.Send)
-				delete(clients, client)
-			}
-		}
-	}
-}
-
-// RegisterClient registers a new client with the hub
+// RegisterClient adds a new client to the hub
 func (h *Hub) RegisterClient(client *Client) {
 	h.register <- client
 }
 
-// UnregisterClient unregisters a client from the hub
+// UnregisterClient removes a client from the hub
 func (h *Hub) UnregisterClient(client *Client) {
 	h.unregister <- client
 }
