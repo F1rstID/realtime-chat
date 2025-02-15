@@ -41,7 +41,12 @@ func SetRoutes(app *fiber.App, config *config.Config) {
 	wsController := controllers.NewWebSocketController(wsHub)
 	userController := controllers.NewUserController(userUseCase)
 
+	// Health check route
+	app.Get("/health", func(c *fiber.Ctx) error {
+		return c.SendString("OK")
+	})
 	// Swagger
+
 	app.Get("/swagger/*", swagger.HandlerDefault)
 
 	// Auth routes

@@ -16,3 +16,10 @@
 [37m2025-01-05 21:34:59 [REQUEST][34m request_logger.go:22: Method: POST, Path: /api/messages, IP: 127.0.0.1, Status: 201, Duration: 7.913291ms[0m
 [37m2025-01-05 21:36:02 [REQUEST][34m request_logger.go:22: Method: POST, Path: /api/messages, IP: 127.0.0.1, Status: 201, Duration: 2.785833ms[0m
 [37m2025-01-05 21:40:55 [REQUEST][34m request_logger.go:22: Method: POST, Path: /api/messages, IP: 127.0.0.1, Status: 201, Duration: 5.488334ms[0m
+[37m2025-01-05 21:43:20 [REQUEST][34m request_logger.go:22: Method: GET, Path: /api/chats, IP: 127.0.0.1, Status: 200, Duration: 12.849666ms[0m
+[37m2025-01-05 21:43:39 [REQUEST][34m request_logger.go:22: Method: POST, Path: /api/auth/login, IP: 127.0.0.1, Status: 200, Duration: 11.069708ms[0m
+[37m2025-01-05 21:43:57 [REQUEST][34m request_logger.go:22: Method: POST, Path: /api/messages, IP: 127.0.0.1, Status: 201, Duration: 15.496333ms[0m
+[37m2025-01-05 21:44:04 [REQUEST][34m request_logger.go:22: Method: GET, Path: /ws, IP: 127.0.0.1, Status: 101, Duration: 971.083µs[0m
+[37m2025-01-05 21:44:06 [REQUEST][34m request_logger.go:22: Method: POST, Path: /api/messages, IP: 127.0.0.1, Status: 201, Duration: 2.223708ms[0m
+[37m2025-01-05 21:50:54 [REQUEST][34m request_logger.go:22: Method: GET, Path: /ws, IP: 127.0.0.1, Status: 101, Duration: 2.356041ms[0m
+[37m2025-01-05 21:51:03 [REQUEST][34m request_logger.go:22: Method: POST, Path: /api/messages, IP: 127.0.0.1, Status: 201, Duration: 18.644125ms[0m
